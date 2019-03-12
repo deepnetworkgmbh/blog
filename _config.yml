@@ -11,6 +11,7 @@ description:         'A reserved <a href="http://jekyllrb.com" target="_blank">J
 url:                 http://lanyon.getpoole.com
 baseurl:             ''
 paginate:            5
+future: true
 
 # About/contact
 author:
@@ -21,4 +22,3 @@ author:
 # Custom vars
 version:             1.0.0
 
-future: true
