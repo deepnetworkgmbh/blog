@@ -8,7 +8,7 @@ title:               Deep Network GMBH
 tagline:             "Developers' Blog"
 description:         'A blog by Developers at Deep Network GMBH'
 url:                 https://deepnetworkgmbh.github.io
-baseurl:             ''
+baseurl:             https://deepnetworkgmbh.github.io
 paginate:            5
 future: true
 
