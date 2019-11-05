@@ -65,7 +65,6 @@ Assuming that you're using [`prometheus-operator`](https://github.com/coreos/pro
   containers:
     - name: nginx-sidecar-proxy
       image: <your nginx image>
-      imagePullPolicy: Always
       ports:
       - containerPort: 8080
 ```
