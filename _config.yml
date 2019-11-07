@@ -11,6 +11,8 @@ url:                 https://deepnetworkgmbh.github.io/blog/
 baseurl:             https://deepnetworkgmbh.github.io/blog/
 paginate:            5
 future: true
+plugins:
+    - jekyll-feed
 
 # About/contact
 author:
