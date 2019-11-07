@@ -12,7 +12,7 @@ baseurl:             https://deepnetworkgmbh.github.io/blog/
 paginate:            5
 future: true
 plugins:
-    - jekyll-feed
+  - jekyll-feed # atom
 
 # About/contact
 author:
