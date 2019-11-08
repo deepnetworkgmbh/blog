@@ -70,7 +70,7 @@ Also, other flows exist, but not used in web apps.
 - Device Authorization Flow (for devices with no browser or limited input capability, seen to be used on Apple Tv)
 - Resource Owner Password Credentials (back channel only)
 
-#Authorization Code Flow
+# Authorization Code Flow
 
 Authorization Flow uses both front-channel and back-channel. Once authorized (with consent) the request is redirected back to a registered endpoint with the Authorization Code. Then this code is exchanged with an Access Token thru back channel. Then the app uses access token for resource access.
 
@@ -219,12 +219,12 @@ Since the authorization can be denied for requests that do not contain a code ch
 
 # References
 
-https://auth0.com/docs/flows/concepts/auth-code-pkce
-https://brockallen.com/2019/01/03/the-state-of-the-implicit-flow-in-oauth2/
-https://www.oauth.com/oauth2-servers/pkce/
-https://www.oauth.com/oauth2-servers/pkce/authorization-request/
-https://www.youtube.com/watch?v=996OiexHze0
-https://tools.ietf.org/html/rfc7636
-https://developer.okta.com/blog/2019/08/22/okta-authjs-pkce
-https://medium.com/oauth-2/why-you-should-stop-using-the-oauth-implicit-grant-2436ced1c926
-https://tools.ietf.org/html/draft-ietf-oauth-security-topics-09
+- https://auth0.com/docs/flows/concepts/auth-code-pkce
+- https://brockallen.com/2019/01/03/the-state-of-the-implicit-flow-in-oauth2/
+- https://www.oauth.com/oauth2-servers/pkce/
+- https://www.oauth.com/oauth2-servers/pkce/authorization-request/
+- https://www.youtube.com/watch?v=996OiexHze0
+- https://tools.ietf.org/html/rfc7636
+- https://developer.okta.com/blog/2019/08/22/okta-authjs-pkce
+- https://medium.com/oauth-2/why-you-should-stop-using-the-oauth-implicit-grant-2436ced1c926
+- https://tools.ietf.org/html/draft-ietf-oauth-security-topics-09
