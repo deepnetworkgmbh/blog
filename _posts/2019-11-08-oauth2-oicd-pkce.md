@@ -14,6 +14,7 @@ As time passes, websites naturally tried to do more. For example, sites like Fac
 # The need for Delegated Authorization
 
 In 2006, guys from Twitter and Ma.gnolia discussed for a better way of sharing data across sites and they concluded there were no open standards for API delegation. Soon enough there was a discussion group with Google joining and in 2010 OAuth version 1.0 was released. It was a framework based on digital signatures. 
+
 However, OAuth 1.0 required crypto-implementation and crypto-interoperability. Due to the cryptographic requirements of the protocol, developers were forced to find, install and configure libraries which became difficult to implement.
 
 In October 2012 came OAuth 2.0, which is a complete rewrite of its ancestor. OAuth 2.0 represents years of discussions between a wide range of companies and individuals including Yahoo!, Facebook, Salesforce, Microsoft, Twitter, Deutsche Telekom, Intuit, Mozilla and Google.
@@ -197,7 +198,7 @@ This means a complete authorization request will include the following parameter
 	redirect_uri = ‘https://fizzbuzz.com/callback’
 	response_type= ‘code’
 	scope = ‘profile contacts calendar’
-    code_challenge = `<The code challenge string>`
+	code_challenge = ’<The code challenge string>’
 	code_challenge_method = S256 
 }
 ```
