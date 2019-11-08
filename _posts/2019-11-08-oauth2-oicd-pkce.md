@@ -13,7 +13,7 @@ As time passes, websites naturally tried to do more. For example, sites like Fac
 
 # The need for Delegated Authorization
 
-In 2006, guys from Twitter and Ma.gnolia discussed for a better way of sharing data across sites and they concluded there were no open standards for API delegation. Soon enough there was a discussion group with Google joining and in 2010 OAuth version 1.0 was released. It was a framework based on digital signatures. 
+In [2006](https://en.wikipedia.org/wiki/OAuth), guys from Twitter and Ma.gnolia discussed for a better way of sharing data across sites and they concluded there were no open standards for API delegation. Soon enough there was a discussion group with Google joining and in 2010 OAuth version 1.0 was released. It was a framework based on digital signatures. 
 
 However, OAuth 1.0 required crypto-implementation and crypto-interoperability. Due to the cryptographic requirements of the protocol, developers were forced to find, install and configure libraries which became difficult to implement.
 
@@ -102,9 +102,9 @@ Here we imagine a web application with backend, registered to google and anyone 
  
 # Implicit Flow
 
-Back in early 2000 browser-based apps were restricted to sending requests to their server’s origin only. Because of the Same Origin Policy, there was no way to call an authorization server’s token endpoint at a different host. 
+Back in early 2000 browser-based apps were restricted to sending requests to their server’s origin only. Because of the [Same Origin Policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy), there was no way to call an authorization server’s token endpoint at a different host. 
 
-Thus, frontend applications were not able to get an access token from another origin using Authorization Code flow, and Cross Origin Resource Sharing was not commonly available (it was accepted as a W3C Recommendation in 2014). Even if it was available, SPA’s have the problem of keeping a client secret securely, which is another limitation.
+Thus, frontend applications were not able to get an access token from another origin using Authorization Code flow, and [Cross Origin Resource Sharing](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) was not commonly available (it was accepted as a W3C Recommendation in 2014). Even if it was available, SPA’s have the problem of keeping a client secret securely, which is another limitation.
 
 For these reasons, Implicit Flow was mainly designed for SPA’s and JavaScript applications with no backend channel.  
 
@@ -126,16 +126,16 @@ For these reasons, Implicit Flow was mainly designed for SPA’s and JavaScript 
 
 The implicit flow looks simpler and less requests involved, but this has also some security implications. 
 
-On November 2018, IETF’s OAuth working group released an draft RFC called   OAuth 2.0 Security Best Current Practice , saying that;
+On November 2018, IETF’s OAuth working group released an draft RFC called  [OAuth 2.0 Security Best Current Practice](https://tools.ietf.org/html/draft-ietf-oauth-security-topics-09) , saying that;
 
 > “The implicit grant (response type “token”) and other response types causing the authorization server to issue access tokens in the authorization response are vulnerable to access token leakage and access token replay … In order to avoid these issues, Clients SHOULD NOT use the implicit grant and any other response type causing the authorization server to issue an access token in the authorization response.”
 
 Today, the security flaws known for Implicit Flow is as follows;
 
--	Confused Deputy problem. The client app must check if the Access token provided belongs to your client.
--	If access token is stored on Local Storage it may be stolen via XSS attack. 
--	Session fixation issues.
--	Possible token leakage with referrer header. 
+-	[Confused Deputy problem](https://stackoverflow.com/questions/17241771/how-and-why-is-google-oauth-token-validation-performed/17439317#17439317). The client app must check if the Access token provided belongs to your client.
+-	If access token is stored on Local Storage it may be stolen via [XSS attack](https://medium.com/redteam/stealing-jwts-in-localstorage-via-xss-6048d91378a0). 
+-	[Session fixation issues](https://hueniverse.com/explaining-the-oauth-session-fixation-attack-aa759250a0e7).
+-	Possible [token leakage with referrer header](https://dzone.com/articles/is-your-site-leaking-password-reset-links). 
 
 # Some more history
 
@@ -220,12 +220,12 @@ Since the authorization can be denied for requests that do not contain a code ch
 
 # References
 
-- https://auth0.com/docs/flows/concepts/auth-code-pkce
-- https://brockallen.com/2019/01/03/the-state-of-the-implicit-flow-in-oauth2/
 - https://www.oauth.com/oauth2-servers/pkce/
 - https://www.oauth.com/oauth2-servers/pkce/authorization-request/
+- https://auth0.com/docs/flows/concepts/auth-code-pkce
+- https://brockallen.com/2019/01/03/the-state-of-the-implicit-flow-in-oauth2/
 - https://www.youtube.com/watch?v=996OiexHze0
-- https://tools.ietf.org/html/rfc7636
 - https://developer.okta.com/blog/2019/08/22/okta-authjs-pkce
 - https://medium.com/oauth-2/why-you-should-stop-using-the-oauth-implicit-grant-2436ced1c926
+- https://tools.ietf.org/html/rfc7636
 - https://tools.ietf.org/html/draft-ietf-oauth-security-topics-09
