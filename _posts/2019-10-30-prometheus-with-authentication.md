@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Authentication for Prometheus via nginx sidecar
+author: yufufi
 ---
 
 Out of the box `Prometheus` does not support any authentication mechanism. If you like to expose your instance externally, and you don't have the luxury of hiding it behind a VPN of some kind, one of your options is to put it behind an `nginx` proxy.
