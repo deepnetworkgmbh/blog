@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Some notes on Kubernetes Networking
+author: yufufi
 ---
 
 This is basically a summary of "Kubernetes Networking" chapter in "Container Networking: From Docker to Kubernetes", as well as some relevant notes, investigations, and articles. The book is available [here](https://www.nginx.com/resources/library/container-networking-docker-kubernetes/) for free.
