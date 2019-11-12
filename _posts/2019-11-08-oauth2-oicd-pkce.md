@@ -10,7 +10,7 @@ Web apps in early 2000 were usually monolithic, having the frontend-backend coup
 
 As time passes, websites naturally tried to do more. For example, sites like Facebook and Yelp wanted to invite your mail contacts into the site, and naively they asked for your email password on other providers to connect and get your contact list. But this was a horrible way of getting data. 
 
-![your email, password and blood of your first-born son please.](oauthoidc-1.png)
+![your email, password and blood of your first-born son please.](/images/oauthoidc-1.png)
 
 # The need for Delegated Authorization
 
@@ -78,7 +78,7 @@ Authorization Flow uses both front-channel and back-channel. Once authorized (wi
 
 Here we imagine a web application with backend, registered to google and anyone using a google account can authenticate against account.google.com to grant access and get her contact list into the application. 
 
-![Authorization Code Flow](oauthoidc-2.png)
+![Authorization Code Flow](/images/oauthoidc-2.png)
 
 - [1] On fizzbuzz, when user clicks on a button named “login with google”, the app is redirected to accounts.google.com with the following;
 ```
@@ -109,7 +109,7 @@ Thus, frontend applications were not able to get an access token from another or
 
 For these reasons, Implicit Flow was mainly designed for SPA’s and JavaScript applications with no backend channel.  
 
-![Implicit Flow](oauthoidc-3.png)
+![Implicit Flow](/images/oauthoidc-3.png)
 
 - [1] User creates an authorization request on Authorization Server and taken to a login page.
 ```
@@ -142,7 +142,7 @@ Today, the security flaws known for Implicit Flow is as follows;
 
 When Auth 2.0 was released in 2012, Facebook reached its first 1 billion users, becoming the attention centre for all the web. Everyone wanted their share with the Facebook userbase, and put a Facebook Login button into their website. 
 
-![first billion is the hardest they say.](oauthoidc-4.png)
+![first billion is the hardest they say.](/images/oauthoidc-4.png)
 
 
 
@@ -150,7 +150,7 @@ When Auth 2.0 was released in 2012, Facebook reached its first 1 billion users, 
 
 With the social media rise, OAuth 2.0 became popular and started being used widely, but not exactly for the right reason. Apart from Delegated Authorization, OAuth 2.0 was being used for Simple Logins, One Click Sign On across multiple sites (Facebook Login), Mobile App Logins and so on.
 
-![`and what you are doing in my backyard?`](oauthoidc-5.png)
+![`and what you are doing in my backyard?`](/images/oauthoidc-5.png)
 
 
 OAuth was designed for Delegate Authorization, but it was being used for Authentication as well. But it was not the right tool for the problem. One can even say this is against single responsibility principle.
@@ -171,7 +171,7 @@ Id token is a long string in a specific format called JWT (JSON Web Token). It i
 
 The signature part has the cryptographic hash of the token. Without doing any additional requests, we can verify that the token is not tampered with and it is genuinely issued by the Authorization Server.
 
-![jwt inside](oauthoidc-6.png)
+![jwt inside](/images/oauthoidc-6.png)
 
 And if the id_token (User information token) does not have enough details for the user, we can always make a request to /userinfo endpoint on the Authorization Provider to get more custom information regarding the domain. With the use of Open ID Connect, we separate Authentication and Authorization in a standardized way. 
 
@@ -185,7 +185,7 @@ The PKCE-enhanced Authorization Code Flow introduces a secret created by the cal
 
 This way, a malicious attacker can only intercept the Authorization Code, and they cannot exchange it for a token without the Code Verifier. 
 
-![code flow with pkce](oauthoidc-7.png)
+![code flow with pkce](/images/oauthoidc-7.png)
 
 - [1] Before the authorization request, the client first creates what is known as a Code Verifier. This is a cryptographically random string using the characters A-Z, a-z, 0-9, and the punctuation characters, between 43 and 128 characters long.
 
