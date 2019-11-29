@@ -1,0 +1,18 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+<div class="w3-card-2">
+  <div id="author-content">
+    <h3>Author</h3>
+    <hr>
+     <div itemprop="author" id="name-author"><strong>{{ author.display_name }}</strong></div>
+
+     <img itemprop="image" id="image-author" src="https://github.com/{{ author.github }}.png?size=40">
+      <div id="about-author">{{ author.about }}</div>
+      <div id="social-author">
+          <!-- Do not share facebook for privacy reasons <a href="{{ author.facebook }}" ><i class="fa fa-facebook-square fa"></i></a> -->
+            <a href="https://twitter.com/{{ author.twitter }}" ><i class="fa fa-twitter-square fa"></i></a>
+            <a href="https://github.com/{{ author.github }}" ><i class="fa fa-github-square fa"></i></a>
+            <!-- Do not share e-mail for prevent privacy reasons <a href="{{ author.email }}" ><i class="fa fa-envelope-square fa"></i></a>-->
+      </div>
+    </div>
+</div>
