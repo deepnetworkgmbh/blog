@@ -8,7 +8,7 @@ A common challenge when building cloud applications is how to manage the credent
 
 ## Managed Identities and Their Relations with Service Principals
 
-Azure managed identities provide Azure services with an automatically managed identity in Azure AD. You can use the identity to authenticate to any service that supports Azure AD authentication, including Key Vault, without any credentials in your code. With the help of this feature, there is no need to think about secret rotation for keys and connection strings. Each corresponding accces token is generated at runtime by the [Azure Instance Metadata Service](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/instance-metadata-service).
+Azure managed identities provide Azure services with an automatically managed identity in Azure AD. You can use the identity to authenticate to any service that supports Azure AD authentication, including Key Vault, without any credentials in your code. With the help of this feature, there is no need to think about secret rotation for keys and connection strings. Each corresponding access token is generated at runtime by the [Azure Instance Metadata Service](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/instance-metadata-service).
 
 There are two types of managed identities in Azure: `System Assigned` and `User Assigned`. The difference between these two is system assigned identity can be enabled for a resource that supports managed identity while provisioning. After the identity is created, it is bound to the lifecycle of a resource which means whenever the related resource is deleted, the corresponding identity is deleted as well. But the user assigned identity is a standalone Azure resource and its lifecycle is not tied to any resource that it is bind to. Also, one user identity can be assigned to multiple Azure service instances. For further reading, you can follow the [official documentation.](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview#how-does-the-managed-identities-for-azure-resources-work)
 
@@ -18,7 +18,7 @@ In this blog post, we are going to define and use a `User Assigned Managed Ident
 
 Before going any further, the relation between managed identity and service principal needs to be well understood. In AAD, applications are represented with `Service Principals` and they define the access policy and permissions for the corresponding application in a single Azure AD tenant. You can follow [this article](https://medium.com/@ihorkliushnikov/azure-active-directory-application-or-service-principal-b5a5e14f2a23) to get a better understanding about the concept. Service Principal is limited when it comes to application password handling, secret rotation and contextual security and `Managed Identities` feature adds one layer on top of service principal to improve its functionality.
 
-When you create a `managed identity`, Azure Resource Manager creates corresponding service principal with the same name as the corresponding identity in Azure AD. You cannot assign new managed identity to an existing service principal. It has to be co-created. Also, this service principal object is not visible through Azure Portal. When you assign this identity to any service instance VM, the Azure Instance Metadata Service identity endpoint is updated with our identity service principal client ID and certificate. In short, when accessing resources with assigned identity, the underlying service principal credentials are used by the Azure Active Directory to grant access to resources. You can assing the required roles for your service principal to access the desired resource.
+When you create a `managed identity`, Azure Resource Manager creates corresponding service principal with the same name as the corresponding identity in Azure AD. You cannot assign new managed identity to an existing service principal. It has to be co-created. Also, this service principal object is not visible through Azure Portal. When you assign this identity to any service instance VM, the Azure Instance Metadata Service identity endpoint is updated with our identity service principal client ID and certificate. In short, when accessing resources with assigned identity, the underlying service principal credentials are used by the Azure Active Directory to grant access to resources. You can assign the required roles for your service principal to access the desired resource.
 
 For example if you create a user assigned identity with the following Azure cli command, you get the output like:
 
@@ -76,10 +76,10 @@ az webapp identity assign --resource-group myResourceGroup --name <myAppName>
 
 After running this command, Azure Resource Manager configures the identity on the underlying VM and updates the Azure Instance Metadata Service Identity endpoint with the assigned managed identity service principal client ID and certificate. And the code that is running on the VM can request a token from Azure Instance Metadata Service identity endpoint, accessible only from within the VM: http://169.254.169.254/metadata/identity/oauth2/token.
 
-However for our scenario, we are not using Azure App Service. We just deploy our `.NET Core` application to the `k8s` cluster. So we don't have such an option to directly assign our application to user assigned managed identity. When we deploy our application to the cluster, somehow we should be able to assing these identities in the pod level. Fortunately, [AAD Pod Identity](https://github.com/Azure/aad-pod-identity) is used for this purpose. It enables `k8s` applications to access cloud resources securely with Azure AD. 
+However for our scenario, we are not using Azure App Service. We just deploy our `.NET Core` application to the `k8s` cluster. So we don't have such an option to directly assign our application to user assigned managed identity. When we deploy our application to the cluster, somehow we should be able to assign these identities in the pod level. Fortunately, [AAD Pod Identity](https://github.com/Azure/aad-pod-identity) is used for this purpose. It enables `k8s` applications to access cloud resources securely with Azure AD. 
 
 [This article](https://medium.com/microsoftazure/pod-identity-5bc0ffb7ebe7) is very nice to get an idea of AAD Pod Identity concept. Basically, when a pod is scheduled to a node, `aad-pod-identity` ensures that a pre-configured user assigned identity is assigned to the underlying VM. If you follow the [Getting Started](https://github.com/Azure/aad-pod-identity#getting-started) steps, you can easily setup your application in cluster with identity binding.
-Of course, before starting you have to have a runnnig `k8s` cluster. 
+Of course, before starting you have to have a running `k8s` cluster. 
 
 First we need to enable AAD Pod Identity in our cluster by deploying it. It includes 1 `NMI` (Node Managed Identity) daemon set and 2 `MIC` (Managed ıdentity Controller) pods and several custom resources. In order to get better insights about this plugin, you can read [concept](https://github.com/Azure/aad-pod-identity/blob/master/docs/design/concept.md) and investigate the [concept diagram](https://github.com/Azure/aad-pod-identity/blob/master/docs/design/concept.png).
 
@@ -89,7 +89,7 @@ Since our cluster is non-RBAC, deploy with the following command:
 kubectl apply -f https://raw.githubusercontent.com/Azure/aad-pod-identity/master/deploy/infra/deployment.yaml
 ```
 
-Create User Assgined Managed Identity and note the `clientId` from output for later use:
+Create User Assigned Managed Identity and note the `clientId` from output for later use:
 
 ```
 az identity create -g myResourceGroup -n myidentity -o json
@@ -122,7 +122,7 @@ spec:
   Selector: connectsqlserver
 ```
 
-In order to match an identity binding, the pod has to define a label with the key `aadpodidbinding` and the value `connectsqlserver`. The label value can be anything. Here in order to describe its intented usage, label value is set to `connectsqlserver`.
+In order to match an identity binding, the pod has to define a label with the key `aadpodidbinding` and the value `connectsqlserver`. The label value can be anything. Here in order to describe its intended usage, label value is set to `connectsqlserver`.
 
 After deploying identity binding to our cluster, the only thing remained is to provide custom label value `connectsqlserver` to our pods `aadpodidbinding` label. When Managed Identity Controller (`MIC`) detects matching between our pod label with corresponding binding, the `MIC` adds assigned identity `AzureAssignedIdentities` to the cluster node. Before deploying our application to the cluster, we must label our pod as:
 
@@ -140,7 +140,7 @@ spec:
 ...
 ```
 
-After setting managed identity with its permissions in pod level, we can update our `.NET Core` application code. First, the following Nuget package have to be installed:
+After setting managed identity with its permissions in pod level, we can update our `.NET Core` application code. First, the following `Nuget` package have to be installed:
 
 ```
 Install-Package Microsoft.Azure.Services.AppAuthentication
