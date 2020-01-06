@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Event Hub Consumer Throughput Analysis 
-author: haluk.aktas@eepnetwork.om
+author: haluk.aktas@deepnetwork.om
 ---
 
 ## Introduction
