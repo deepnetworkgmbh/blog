@@ -219,7 +219,7 @@ I1223 12:22:16.531392       1 stats.go:127] *********************
 
 ## Considerations While Using aad-pod-identity in Cluster
 
-There are some [scenarious](https://itnext.io/using-aad-pod-identity-in-your-azure-kubernetes-clusters-what-to-watch-out-for-73d5d73960f) that you should be aware of before using cluster level pod identity binding. There are some in-work improvements to handle these issues according to the [article](https://medium.com/microsoftazure/pod-identity-5bc0ffb7ebe7). You can see the details of them from the provided article. For example, Azure Kubernetes Service (`AKS`) stores Service Principal credential used to talk with the Azure API in plain-text. In addition, the deployed `MIC` pod mounts that file into itself. So, any user with execute access on `MIC` can access to these credentials.
+There are some [scenarious](https://itnext.io/using-aad-pod-identity-in-your-azure-kubernetes-clusters-what-to-watch-out-for-73d5d73960f) that you should be aware of before using cluster level pod identity binding. There are some in-work improvements to handle these issues according to the [article](https://medium.com/microsoftazure/pod-identity-5bc0ffb7ebe7). You can see the details of them from the provided article. For example, Azure Kubernetes Service (`AKS`) stores Service Principal credential used to talk with the Azure API in plain-text. This service principal is separate from the underlying identity's service principal. It is the service principal that is created while provisioning the cluster. In addition, the deployed `MIC` pod mounts that file into itself. So, any user with execute access on `MIC` can access to these credentials.
 
 ## Summary
 
