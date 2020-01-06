@@ -8,11 +8,12 @@ title:               Deep Network GMBH
 tagline:             "Developers' Blog"
 description:         'A blog by Developers at Deep Network GMBH'
 url:                 https://deepnetworkgmbh.github.io/blog/
-baseurl:             https://deepnetworkgmbh.github.io/blog/
+baseurl:             /blog/
 paginate:            5
 future: true
 plugins:
   - jekyll-feed # atom
+  - jekyll-paginate
 
 # About/contact
 author:

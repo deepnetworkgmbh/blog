@@ -4,15 +4,13 @@ title: OAuth 2.0 and Open ID Connect
 author: ucelenli
 ---
 
-# Some history
-
 Web apps in early 2000 were usually monolithic, having the frontend-backend coupled in the same application, with a server hosting the application end to end. The forms way of authorization was being done in the application, and the web user was authenticated using user agent cookies. 
 
 As time passes, websites naturally tried to do more. For example, sites like Facebook and Yelp wanted to invite your mail contacts into the site, and naively they asked for your email password on other providers to connect and get your contact list. But this was a horrible way of getting data. 
 
-![your email, password and blood of your first-born son please.](/images/oauthoidc-1.png)
+![your email, password and blood of your first-born son please.](/blog/images/oauthoidc-1.png)
 
-# The need for Delegated Authorization
+## The need for Delegated Authorization
 
 In [2006](https://en.wikipedia.org/wiki/OAuth), guys from Twitter and Ma.gnolia discussed for a better way of sharing data across sites and they concluded there were no open standards for API delegation. Soon enough there was a discussion group with Google joining and in 2010 OAuth version 1.0 was released. It was a framework based on digital signatures. 
 
@@ -20,7 +18,7 @@ However, OAuth 1.0 required crypto-implementation and crypto-interoperability. D
 
 In October 2012 came OAuth 2.0, which is a complete rewrite of its ancestor. OAuth 2.0 represents years of discussions between a wide range of companies and individuals including Yahoo!, Facebook, Salesforce, Microsoft, Twitter, Deutsche Telekom, Intuit, Mozilla and Google.
 
-# OAuth 2.0 with an example
+## OAuth 2.0 with an example
 
 Let’s imagine we have an ASP web app called fizzbuzz. We need to let google know about it, thus a one-time setup must be made. Once the registration is done, we have a client id and a client secret on hand, which are used on some scenarios. 
 
@@ -34,7 +32,7 @@ Client secret is a sensitive data and must be stored on client securely. It will
 **Access Token**; is a key for client to access resource server that is provided by the authorization server.
 Authorization Grant; the act of authorizing client against an authorization server. 
 
-# Scopes and Access Granularity
+## Scopes and Access Granularity
 
 When asking for permissions, it’s never all or nothing. It is a good idea to declare what kind of operations are permitted to client when asking for delegated access, and OAuth exactly does that with scopes. 
 
@@ -49,7 +47,7 @@ Scopes are the list of privileges we’re asking for when doing a request. And c
 }
 ```
 
-# Channels
+## Channels
 
 In networking scenarios, there are two ways systems reach each other.  Front Channel and Back Channel. 
  > “Front-channel communication is when the communications between two or more parties which are observable within the protocol. Back-channel Communication is when the communications are NOT observable to at least one of the parties within the protocol.” 
@@ -58,7 +56,7 @@ In simple terms, *Front Channel Communication* is when requests are communicated
 
 Back Channel communication relies on mutually authenticated TLS (Transport Layer Security) for end-to-end security as the communication is point-to-point, thus considered more secure.
 
-# Flows
+## Flows
 
 OAuth 2.0 supports different Authentication and Authorization flows (called grants) which serve different architectures. Each flow defines the request-response chain and between the client and authorization authority.
 
@@ -72,13 +70,13 @@ Also, other flows exist, but not used in web apps.
 - Device Authorization Flow (for devices with no browser or limited input capability, seen to be used on Apple Tv)
 - Resource Owner Password Credentials (back channel only)
 
-# Authorization Code Flow
+## Authorization Code Flow
 
 Authorization Flow uses both front-channel and back-channel. Once authorized (with consent) the request is redirected back to a registered endpoint with the Authorization Code. Then this code is exchanged with an Access Token thru back channel. Then the app uses access token for resource access.
 
 Here we imagine a web application with backend, registered to google and anyone using a google account can authenticate against account.google.com to grant access and get her contact list into the application. 
 
-![Authorization Code Flow](/images/oauthoidc-2.png)
+![Authorization Code Flow](/blog/images/oauthoidc-2.png)
 
 - [1] On fizzbuzz, when user clicks on a button named “login with google”, the app is redirected to accounts.google.com with the following;
 ```
@@ -101,7 +99,7 @@ Here we imagine a web application with backend, registered to google and anyone 
 - [6] Now the user is Authorized and has access to the resources provided by the Resource Server.
 
  
-# Implicit Flow
+## Implicit Flow
 
 Back in early 2000 browser-based apps were restricted to sending requests to their server’s origin only. Because of the [Same Origin Policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy), there was no way to call an authorization server’s token endpoint at a different host. 
 
@@ -109,7 +107,7 @@ Thus, frontend applications were not able to get an access token from another or
 
 For these reasons, Implicit Flow was mainly designed for SPA’s and JavaScript applications with no backend channel.  
 
-![Implicit Flow](/images/oauthoidc-3.png)
+![Implicit Flow](/blog/images/oauthoidc-3.png)
 
 - [1] User creates an authorization request on Authorization Server and taken to a login page.
 ```
@@ -142,7 +140,7 @@ Today, the security flaws known for Implicit Flow is as follows;
 
 When Auth 2.0 was released in 2012, Facebook reached its first 1 billion users, becoming the attention centre for all the web. Everyone wanted their share with the Facebook userbase, and put a Facebook Login button into their website. 
 
-![first billion is the hardest they say.](/images/oauthoidc-4.png)
+![first billion is the hardest they say.](/blog/images/oauthoidc-4.png)
 
 
 
@@ -150,7 +148,7 @@ When Auth 2.0 was released in 2012, Facebook reached its first 1 billion users, 
 
 With the social media rise, OAuth 2.0 became popular and started being used widely, but not exactly for the right reason. Apart from Delegated Authorization, OAuth 2.0 was being used for Simple Logins, One Click Sign On across multiple sites (Facebook Login), Mobile App Logins and so on.
 
-![`and what you are doing in my backyard?`](/images/oauthoidc-5.png)
+![`and what you are doing in my backyard?`](/blog/images/oauthoidc-5.png)
 
 
 OAuth was designed for Delegate Authorization, but it was being used for Authentication as well. But it was not the right tool for the problem. One can even say this is against single responsibility principle.
@@ -171,7 +169,7 @@ Id token is a long string in a specific format called JWT (JSON Web Token). It i
 
 The signature part has the cryptographic hash of the token. Without doing any additional requests, we can verify that the token is not tampered with and it is genuinely issued by the Authorization Server.
 
-![jwt inside](/images/oauthoidc-6.png)
+![jwt inside](/blog/images/oauthoidc-6.png)
 
 And if the id_token (User information token) does not have enough details for the user, we can always make a request to /userinfo endpoint on the Authorization Provider to get more custom information regarding the domain. With the use of Open ID Connect, we separate Authentication and Authorization in a standardized way. 
 
@@ -185,7 +183,7 @@ The PKCE-enhanced Authorization Code Flow introduces a secret created by the cal
 
 This way, a malicious attacker can only intercept the Authorization Code, and they cannot exchange it for a token without the Code Verifier. 
 
-![code flow with pkce](/images/oauthoidc-7.png)
+![code flow with pkce](/blog/images/oauthoidc-7.png)
 
 - [1] Before the authorization request, the client first creates what is known as a Code Verifier. This is a cryptographically random string using the characters A-Z, a-z, 0-9, and the punctuation characters, between 43 and 128 characters long.
 
@@ -214,12 +212,12 @@ This means a complete authorization request will include the following parameter
 
 - [8] Now client has a validated Access Token for accessing resources.
  
-# Conclusion
+## Conclusion
 As SPA’s are rapidly used and as the nature of the apps are similar to mobile applications, it is suggested that the Authorization Code Flow with PKCE is to be used for Authorization and Authentication.
 
 Since the authorization can be denied for requests that do not contain a code challenge. This is really the only way to allow public clients to have a secure authorization flow without using the client secret.
 
-# References
+## References
 
 - https://www.oauth.com/oauth2-servers/pkce/
 - https://www.oauth.com/oauth2-servers/pkce/authorization-request/
