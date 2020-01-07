@@ -20,7 +20,7 @@ In this document, we are going to use [AKS Engine](https://github.com/Azure/aks-
 # Pre-requisites
 - You need an Azure subscription. If you don't have one, you can [sign up for an account](https://azure.microsoft.com/).
 - Install the [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest).
-- Install [AKS Engine](quickstart.md#install-aks-engine) (As of writing, the latest version is v0.43.3)
+- Install [AKS Engine](https://github.com/Azure/aks-engine/releases) (As of writing, the latest version is v0.43.3)
 
 # Infrastructure
 
