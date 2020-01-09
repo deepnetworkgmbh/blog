@@ -122,11 +122,10 @@ The API model file provides various configurations which aks-engine uses to crea
 * `clientId`: this is the service principal's appId
 * `secret`: this is the service principal's password
 
-
 You should only provide `keyData`, `clientId` and `secret` fields in `aks.json` to be able to run the **build** script.
 
 ## Build Script
-To build and deploy the kubernetes cluster on a custom Azure VNET, we'll use [`build.sh`](/blog/assets/aksengine-advanced-networking/build.sh) script. The script will:
+To build and deploy the kubernetes cluster on a custom Azure VNET, we'll use [build.sh](/blog/assets/aksengine-advanced-networking/build.sh) script. The script will:
 
 - create the resource group on Azure,
 - deploy a custom Azure VNET from `aks-vnet.json`,
@@ -150,7 +149,7 @@ There are 5 different Network Plugin options for aks-engine:
 
 *HINT: In this document, we only explain the details of Kubenet and Azure-CNI networking options.*
 
-A sample usage of the [`build.sh`](/blog/assets/aksengine-advanced-networking/build.sh) script is as follows:
+A sample usage of the [build.sh](/blog/assets/aksengine-advanced-networking/build.sh) script is as follows:
 
 ```
 $ sh build.sh dev azure
@@ -190,7 +189,7 @@ An output similar to the following should be given:
 
 It's obvious that our nodes are getting IPs from the Azure VNET. Since the `azure` networking plug-in was used on the deployment, we're expecting that the `pods` also will get IP address from our custom Azure VNET. Let's check it out, by creating some pods.
 
-Open [`pods/ssh-pod-a-node-0.yaml`](/blog/assets/aksengine-advanced-networking/pods/ssh-pod-a-node-0.yaml) file in an editor and change `kubernetes.io/hostname` field with the name of your first agent node (The node with IP address **10.20.0.4**). In my case, it's `k8s-agentpool1-37464322-vmss000000`.
+Open [pods/ssh-pod-a-node-0.yaml](/blog/assets/aksengine-advanced-networking/pods/ssh-pod-a-node-0.yaml) file in an editor and change `kubernetes.io/hostname` field with the name of your first agent node (The node with IP address **10.20.0.4**). In my case, it's `k8s-agentpool1-37464322-vmss000000`.
 
 You can find all pod definitions [here.](/blog/assets/aksengine-advanced-networking/pods/)
 
@@ -362,7 +361,7 @@ k8s-agentpool1-37464322-vmss000001   Ready    agent    16m   v1.10.12   <none>  
 k8s-master-37464322-0                Ready    master   16m   v1.10.12   <none>        Ubuntu 16.04.5 LTS   4.15.0-1036-azure   docker://3.0.1
 ```
 
-Let's continue by creating two seperate pods on each `agent` nodes. Before, we need to change the `node selector` field of the yaml files. Open [`pods/ssh-pod-a-node-0.yaml`](/blog/assets/aksengine-advanced-networking/pods/ssh-pod-a-node-0.yaml) file in an editor and change `kubernetes.io/hostname` field with the name of your first agent node (The node with IP address **10.20.0.4**). In my case, it's `k8s-agentpool1-37464322-vmss000000`.
+Let's continue by creating two seperate pods on each `agent` nodes. Before, we need to change the `node selector` field of the yaml files. Open [pods/ssh-pod-a-node-0.yaml](/blog/assets/aksengine-advanced-networking/pods/ssh-pod-a-node-0.yaml) file in an editor and change `kubernetes.io/hostname` field with the name of your first agent node (The node with IP address **10.20.0.4**). In my case, it's `k8s-agentpool1-37464322-vmss000000`.
 
 Now, deploy **pod-a** on **node-0** and **pod-c** on **node-1**.
 ```
