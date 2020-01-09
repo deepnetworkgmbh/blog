@@ -1,0 +1,41 @@
+{
+  "apiVersion": "vlabs",
+  "properties": {
+    "orchestratorProfile": {
+      "orchestratorType": "Kubernetes",
+      "orchestratorRelease": "1.16",
+      "kubernetesConfig": {
+        "networkPlugin": "",
+	      "apiServerConfig": {
+          "--enable-admission-plugins": "NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,DefaultTolerationSeconds,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,ResourceQuota,AlwaysPullImages"
+	      }
+      }
+    },
+    "masterProfile": {
+      "count": 1,
+      "vmSize": "Standard_D2_v2",
+      "firstConsecutiveStaticIP": "10.10.0.5"
+    },
+    "agentPoolProfiles": [
+     {
+        "name": "agentpool1",
+        "count": 2,
+        "vmSize": "Standard_D2_v2"
+     }
+    ],
+    "linuxProfile": {
+      "adminUsername": "azureadmin",
+      "ssh": {
+        "publicKeys": [
+          {
+            "keyData": ""
+          }
+        ]
+      }
+    },
+    "servicePrincipalProfile": {
+      "clientId":"",
+      "secret": ""
+    }
+  }
+}
