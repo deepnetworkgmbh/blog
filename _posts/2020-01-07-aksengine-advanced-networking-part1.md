@@ -4,6 +4,8 @@ title: Understanding Networking Options in Azure AKS-Engine [Part 1]
 author: ahmed.demirpolat@deepnetwork.com
 ---
 
+* TOC
+{:toc}
 AKS Engine provides convenient tooling to quickly bootstrap Kubernetes clusters on Azure. By leveraging ARM (Azure Resource Manager), AKS Engine helps you create, destroy and maintain clusters provisioned with basic IaaS resources in Azure. AKS Engine is also the library used by AKS for performing these operations to provide managed service implementations.
 
 In this document, we are going to use [AKS Engine](https://github.com/Azure/aks-engine) to deploy a brand new cluster with 2 different networking options (kubenet and azure cni) into an existing or pre-created virtual network.
