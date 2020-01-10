@@ -1,12 +1,10 @@
 ---
 layout: post
 title: Event Hub Consumer Throughput Analysis 
-author: haluk.aktas@deepnetwork.om
+author: haktas
 ---
 
-## Introduction
-
-In this document we are going to analyze various strategies to increase the throughput in a sample EventHub consumer application. We will try out various scenarios, starting with a baseline to compare results against. During the tests, the `Prometheus` metric scrape interval is set to 10 seconds. Also, the `Grafana` dashboards display the latest 15 minutes for each individual task with 10 seconds refresh interval. Each test scenario based on the customization made to the single partition event hub consumer code snippet. In order to see the effects of our improvements, we dedicated event hub sender to send events only to single partition. So, we can say there is no event hub partition parallelism during our tests. In addition to these, we have used [Event Processor Host](https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-event-processor-host) which is an agent for .NET consumers that manages partition access and per partition offset for consumers.
+In this post we are going to analyze various strategies to increase the throughput in a sample EventHub consumer application. We will try out various scenarios, starting with a baseline to compare results against. During the tests, the `Prometheus` metric scrape interval is set to 10 seconds. Also, the `Grafana` dashboards display the latest 15 minutes for each individual task with 10 seconds refresh interval. Each test scenario based on the customization made to the single partition event hub consumer code snippet. In order to see the effects of our improvements, we dedicated event hub sender to send events only to single partition. So, we can say there is no event hub partition parallelism during our tests. In addition to these, we have used [Event Processor Host](https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-event-processor-host) which is an agent for .NET consumers that manages partition access and per partition offset for consumers.
 
 ## 1. Baseline
 
@@ -53,7 +51,7 @@ The average total duration is 30.69 msec/event and it is approximately 0.031 sec
 
 The related code part for getting the above results is in the following:
 
-```
+``` c#
 public async Task ProcessEventsAsync(PartitionContext context, IEnumerable<EventData> messages)
 {
 	stopWatchTotal.Start();
@@ -128,7 +126,7 @@ The average total duration is 21.14 msec/event and it is approximately 0.021 sec
 
 The related code part for getting the above results is in the following:
 
-```
+``` c#
 public async Task ProcessEventsAsync(PartitionContext context, IEnumerable<EventData> messages)
 {
 	
@@ -220,7 +218,7 @@ The average total duration is 9 msec/event and it is 0.009 sec/event. The irate 
 
 The related code part for getting the above results is in the following:
 
-```
+``` c#
 public async Task ProcessEventsAsync(PartitionContext context, IEnumerable<EventData> messages)
 {
 	
@@ -308,7 +306,7 @@ The average total duration is 8 msec/event which is 0.008 sec/event. The irate g
 
 The related code part for getting the above results is in the following:
 
-```
+``` c#
 public async Task ProcessEventsAsync(PartitionContext context, IEnumerable<EventData> messages)
 {
 	
@@ -365,3 +363,8 @@ public async Task ProcessEventsAsync(PartitionContext context, IEnumerable<Event
 | blobstorage_stopwatch    | msec/event |		`9.35`		|			`9.31`		|			`20`			|				`13`				|
 | checkpoint_stopwatch 	   | msec/event |		`2.47`		|			`2.47`		|			`2`				|				`2`					|
 | processed_messagecounter | event/sec  |		`31.95`		|			`43.93`		|			`115.89`		|				`120`				|
+
+
+## Conclusion
+
+We can maximize event hub consumer throughput by using parallelism. In order to see the effects, the different scenarios should be applied step by step. Also, the appropriate metrics should be used to observe the results, correctly. The depicted results in this post depends on [Event Processor Host](https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-event-processor-host), so different implementations may perform better.
