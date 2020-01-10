@@ -49,7 +49,7 @@ The average total duration is 30.69 msec/event and it is approximately 0.031 sec
 
 ### 1.2	The Message Processing Loop 
 
-The related code part for getting the above results is in the following:
+The related code part for getting the above results is in the following`(error handling being out of scope)`:
 
 ``` c#
 public async Task ProcessEventsAsync(PartitionContext context, IEnumerable<EventData> messages)
@@ -124,7 +124,7 @@ The average total duration is 21.14 msec/event and it is approximately 0.021 sec
 
 ### 2.2	The Message Processing Loop
 
-The related code part for getting the above results is in the following:
+The related code part for getting the above results is in the following`(error handling being out of scope)`:
 
 ``` c#
 public async Task ProcessEventsAsync(PartitionContext context, IEnumerable<EventData> messages)
@@ -216,7 +216,7 @@ The average total duration is 9 msec/event and it is 0.009 sec/event. The irate 
 
 ### 3.2 The Message Processing Loop
 
-The related code part for getting the above results is in the following:
+The related code part for getting the above results is in the following`(error handling being out of scope)`:
 
 ``` c#
 public async Task ProcessEventsAsync(PartitionContext context, IEnumerable<EventData> messages)
@@ -304,7 +304,7 @@ The average total duration is 8 msec/event which is 0.008 sec/event. The irate g
 
 ### 4.2 The Message Processing Loop
 
-The related code part for getting the above results is in the following:
+The related code part for getting the above results is in the following`(error handling being out of scope)`:
 
 ``` c#
 public async Task ProcessEventsAsync(PartitionContext context, IEnumerable<EventData> messages)
@@ -367,4 +367,4 @@ public async Task ProcessEventsAsync(PartitionContext context, IEnumerable<Event
 
 ## Conclusion
 
-We can maximize event hub consumer throughput by using parallelism. In order to see the effects, the different scenarios should be applied step by step. Also, the appropriate metrics should be used to observe the results, correctly. The depicted results in this post depends on [Event Processor Host](https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-event-processor-host), so different implementations may perform better.
+We can maximize event hub consumer throughput by using parallelism. You can process events by assigning each of them to an individual thread from the thread pool rather than blocking the calling thread. This will decrease the time required to process all the upcoming events which results in better throughput. In order to see the effects, the different scenarios should be applied step by step. Also, the appropriate metrics should be used to observe the results, correctly. The depicted results in this post depends on [Event Processor Host](https://docs.microsoft.com/en-us/azure/event-hubs/event-hubs-event-processor-host), so different implementations may perform better.
