@@ -96,7 +96,7 @@ By dividing table into partitions rather than having a single table will ease id
 
 ### 4- Housekeeping Stored Procedure
 
-- After defining table, partition schema and function it is time to perform the actual sliding window operation. To do that, we have to create a stored procedure that will be called by our cronjob. The skeleton for the procedure would be like the following:
+- After defining table, partition schema and function it is time to perform the actual sliding window operation. To do that, we have to create a stored procedure that will be called by our cronjob. The skeleton for the procedure would be like the following (error handling being out of scope):
 
 ``` sql
 	-- Go back 1 year
@@ -243,4 +243,4 @@ Also, we have an `appsettings template file` that keeps secrets and connection s
 
 ## Conclusion
 
-Database housekeeping is a complex operation which consists of separate steps including table partitioning, stored procedures and cronjobs.
+Database housekeeping is a complex operation which consists of separate steps including table partitioning, stored procedures and cronjobs. You have to decide how you are going to partition your table by defining partition boundary values and proper partition key on target table. To perform the housekeeping operation in a timely manner, you have to setup a cronjob that calls corresponding stored procedure in which sliding window partitioning occurs at specified time intervals.

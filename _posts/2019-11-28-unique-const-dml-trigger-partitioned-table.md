@@ -8,7 +8,7 @@ In this post, you can find 2 scenarios that explain how selected partition key a
 
 ## Selecting Proper Column As a Partition Key
 
-- If you have table structure similar to the below one and you want to partition your table according to month, then you should compute your partition key with a selected `DateTime` column. So, at first look, it is very reasonable to take `createdTime` column into account to computation. Since when the record is inserted to the table, it will be automatically placed on the correct partition. However, there is a unique combined index on table which constraints it as there cannot be more than one record with the same (partitionKey, name, startTime, endTime) combination in same partition. If we choose, createdTime as our partition key then it is guaranteed that this combination is unique in each partition but other partitions can have the same combination as well. So, it violates our unique constraint. To overcome this problem, it is better to choose endTime column for computation of a partition key so that (name, startTime, endTime) combination can be unique across whole table. We have faced with the similar scenario in one of our projects and that is how we managed to resolve it.
+- If you have table structure similar to the below one and you want to partition your table according to month, then you should compute your partition key with a selected `DateTime` column. So, at first look, it is very reasonable to take `createdTime` column into account to computation. Since when the record is inserted to the table, it will be automatically placed on the correct partition. However, there is a unique combined index on table which constraints it as there cannot be more than one record with the same (partitionKey, name, startTime, endTime) combination in the same partition. If we choose, createdTime as our partition key then it is guaranteed that this combination is unique in each partition but other partitions can have the same combination as well. So, it violates our unique constraint. To overcome this problem, it is better to choose endTime column for computation of a partition key so that (name, startTime, endTime) combination can be unique across whole table. We have faced with the similar scenario in one of our projects and that is how we managed to resolve it.
 
 ``` sql
 	CREATE TABLE [MySchema].[MyTableName]
@@ -96,7 +96,7 @@ In this post, you can find 2 scenarios that explain how selected partition key a
 		END
 	END
 ```
-- Basically, this trigger first checks if there is any record with same SpecificId present in whole table before inserting new ones. Note that, we are joining inserted and target table rather than just selecting from target table. The reason is, there can be `bulk insert` situations in the future. If there is no duplicated SpecificId, then it is safe to insert. Otherwise, just throw an exception. In fact, this trigger decreases performance but since we do not have any other option to ensure uniqueness and there is an index on SpecificId column, performance is not a first priority. There is another interesting point in this trigger definition which is the line:
+- Basically, this trigger first checks if there is any record with same SpecificId present in the whole table before inserting new ones. Note that, we are joining inserted and target table rather than just selecting from target table. The reason is, there can be `bulk insert` situations in the future. If there is no duplicated SpecificId, then it is safe to insert. Otherwise, just throw an exception. In fact, this trigger decreases performance but since we do not have any other option to ensure uniqueness and there is an index on SpecificId column, performance is not a first priority. There is another interesting point in this trigger definition which is the line:
 
 ``` sql
 		SELECT [inserted].[Id] FROM [inserted] WHERE @@ROWCOUNT > 0 AND [inserted].[Id] = scope_identity();
@@ -105,4 +105,4 @@ In this post, you can find 2 scenarios that explain how selected partition key a
 
 ## Conclusion
 
-You have to be careful while designing your partitioning especially if you have unique constraints.
+You have to be careful while selecting your partition key before applying a table partitioning. Especially, if you have unique constraints since uniqueness of the selected column combinations are enforced in each partition rather than the entire table. Also, if you don't have a chance to select another column as your partition key to enforce the uniqueness in the entire table, you can define custom `DML` trigger. This solution decreases the performance of your inserts but it is an option when you don't have any other.
