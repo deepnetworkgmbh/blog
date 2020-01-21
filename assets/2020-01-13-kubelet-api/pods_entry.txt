@@ -1,0 +1,255 @@
+{
+    "metadata": {
+        "name": "",
+        "generateName": "",
+        "namespace": "",
+        "selfLink": "",
+        "uid": "",
+        "resourceVersion": "",
+        "creationTimestamp": "",
+        "labels": {
+            "controller-revision-hash": "",
+            "namespace": "",
+            "pod-template-generation": ""
+        },
+        "annotations": {
+            "kubernetes.io/config.seen": "",
+            "kubernetes.io/config.source": "",
+            "scheduler.alpha.kubernetes.io/critical-pod": ""
+        },
+        "ownerReferences": [
+            {
+                "apiVersion": "",
+                "kind": "",
+                "name": "",
+                "uid": "",
+                "controller": true,
+                "blockOwnerDeletion": true
+            }
+        ]
+    },
+    "spec": {
+        "volumes": [
+            {
+                "name": "",
+                "hostPath": {
+                    "path": "",
+                    "type": ""
+                }
+            },
+            {
+                "name": "",
+                "hostPath": {
+                    "path": "",
+                    "type": ""
+                }
+            },
+            {
+                "name": "",
+                "configMap": {
+                    "name": "",
+                    "defaultMode": 420
+                }
+            },
+            {
+                "name": "",
+                "secret": {
+                    "secretName": "",
+                    "defaultMode": 420
+                }
+            }
+        ],
+        "containers": [
+            {
+                "name": "",
+                "image": "",
+                "envFrom": [
+                    {
+                        "secretRef": {
+                            "name": ""
+                        }
+                    }
+                ],
+                "env": [
+                    {
+                        "name": "",
+                        "value": ""
+                    },
+                    {
+                        "name": "",
+                        "valueFrom": {
+                            "fieldRef": {
+                                "apiVersion": "",
+                                "fieldPath": ""
+                            }
+                        }
+                    },
+                    {
+                        "name": "",
+                        "valueFrom": {
+                            "fieldRef": {
+                                "apiVersion": "",
+                                "fieldPath": ""
+                            }
+                        }
+                    },
+                    {
+                        "name": "",
+                        "valueFrom": {
+                            "fieldRef": {
+                                "apiVersion": "",
+                                "fieldPath": ""
+                            }
+                        }
+                    }
+                ],
+                "resources": {
+                    "limits": {
+                        "cpu": "",
+                        "memory": ""
+                    },
+                    "requests": {
+                        "cpu": "",
+                        "memory": ""
+                    }
+                },
+                "volumeMounts": [
+                    {
+                        "name": "",
+                        "mountPath": ""
+                    },
+                    {
+                        "name": "",
+                        "readOnly": true,
+                        "mountPath": ""
+                    },
+                    {
+                        "name": "",
+                        "mountPath": ""
+                    },
+                    {
+                        "name": "",
+                        "readOnly": true,
+                        "mountPath": ""
+                    }
+                ],
+                "terminationMessagePath": "",
+                "terminationMessagePolicy": "",
+                "imagePullPolicy": ""
+            }
+        ],
+        "restartPolicy": "",
+        "terminationGracePeriodSeconds": 30,
+        "dnsPolicy": "",
+        "serviceAccountName": "",
+        "serviceAccount": "",
+        "nodeName": "",
+        "securityContext": {},
+        "affinity": {
+            "nodeAffinity": {
+                "requiredDuringSchedulingIgnoredDuringExecution": {
+                    "nodeSelectorTerms": [
+                        {
+                            "matchFields": [
+                                {
+                                    "key": "",
+                                    "operator": "",
+                                    "values": [
+                                        ""
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        "schedulerName": "",
+        "tolerations": [
+            {
+                "key": "",
+                "operator": "",
+                "effect": ""
+            },
+            {
+                "key": "",
+                "operator": "",
+                "effect": ""
+            },
+            {
+                "key": "",
+                "operator": "",
+                "effect": ""
+            },
+            {
+                "key": "",
+                "operator": "",
+                "effect": ""
+            },
+            {
+                "key": "",
+                "operator": "",
+                "effect": ""
+            }
+        ],
+        "priority": 0,
+        "enableServiceLinks": true
+    },
+    "status": {
+        "phase": "",
+        "conditions": [
+            {
+                "type": "",
+                "status": "",
+                "lastProbeTime": null,
+                "lastTransitionTime": ""
+            },
+            {
+                "type": "",
+                "status": "",
+                "lastProbeTime": null,
+                "lastTransitionTime": ""
+            },
+            {
+                "type": "",
+                "status": "",
+                "lastProbeTime": null,
+                "lastTransitionTime": ""
+            },
+            {
+                "type": "",
+                "status": "",
+                "lastProbeTime": null,
+                "lastTransitionTime": ""
+            }
+        ],
+        "hostIP": "",
+        "podIP": "",
+        "startTime": "",
+        "containerStatuses": [
+            {
+                "name": "",
+                "state": {
+                    "running": {
+                        "startedAt": ""
+                    }
+                },
+                "lastState": {
+                    "terminated": {
+                        "exitCode": 255,
+                        "reason": "",
+                        "startedAt": "",
+                        "finishedAt": "",
+                        "containerID": ""
+                    }
+                },
+                "ready": true,
+                "restartCount": 12,
+                "image": "",
+                "imageID": "",
+                "containerID": ""
+            }
+        ],
+        "qosClass": ""
+    }
+}

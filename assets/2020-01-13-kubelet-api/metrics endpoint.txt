@@ -1,0 +1,97 @@
+# HELP apiserver_audit_event_total Counter of audit events generated and sent to the audit backend.
+# HELP apiserver_audit_requests_rejected_total Counter of apiserver requests rejected due to an error in audit logging backend.
+# HELP apiserver_client_certificate_expiration_seconds Distribution of the remaining lifetime on the certificate used to authenticate a request.
+# HELP apiserver_storage_data_key_generation_duration_seconds Latencies in seconds of data encryption key(DEK) generation operations.
+# HELP apiserver_storage_data_key_generation_failures_total Total number of failed data encryption key(DEK) generation operations.
+# HELP apiserver_storage_data_key_generation_latencies_microseconds (Deprecated) Latencies in microseconds of data encryption key(DEK) generation operations.
+# HELP apiserver_storage_envelope_transformation_cache_misses_total Total number of cache misses while accessing key decryption key(KEK).
+# HELP cloudprovider_azure_api_request_duration_seconds Latency of an Azure API call
+# HELP get_token_count Counter of total Token() requests to the alternate token source
+# HELP get_token_fail_count Counter of failed Token() requests to the alternate token source
+# HELP go_gc_duration_seconds A summary of the GC invocation durations.
+# HELP go_goroutines Number of goroutines that currently exist.
+# HELP go_info Information about the Go environment.
+# HELP go_memstats_alloc_bytes Number of bytes allocated and still in use.
+# HELP go_memstats_alloc_bytes_total Total number of bytes allocated, even if freed.
+# HELP go_memstats_buck_hash_sys_bytes Number of bytes used by the profiling bucket hash table.
+# HELP go_memstats_frees_total Total number of frees.
+# HELP go_memstats_gc_cpu_fraction The fraction of this program's available CPU time used by the GC since the program started.
+# HELP go_memstats_gc_sys_bytes Number of bytes used for garbage collection system metadata.
+# HELP go_memstats_heap_alloc_bytes Number of heap bytes allocated and still in use.
+# HELP go_memstats_heap_idle_bytes Number of heap bytes waiting to be used.
+# HELP go_memstats_heap_inuse_bytes Number of heap bytes that are in use.
+# HELP go_memstats_heap_objects Number of allocated objects.
+# HELP go_memstats_heap_released_bytes Number of heap bytes released to OS.
+# HELP go_memstats_heap_sys_bytes Number of heap bytes obtained from system.
+# HELP go_memstats_last_gc_time_seconds Number of seconds since 1970 of last garbage collection.
+# HELP go_memstats_lookups_total Total number of pointer lookups.
+# HELP go_memstats_mallocs_total Total number of mallocs.
+# HELP go_memstats_mcache_inuse_bytes Number of bytes in use by mcache structures.
+# HELP go_memstats_mcache_sys_bytes Number of bytes used for mcache structures obtained from system.
+# HELP go_memstats_mspan_inuse_bytes Number of bytes in use by mspan structures.
+# HELP go_memstats_mspan_sys_bytes Number of bytes used for mspan structures obtained from system.
+# HELP go_memstats_next_gc_bytes Number of heap bytes when next garbage collection will take place.
+# HELP go_memstats_other_sys_bytes Number of bytes used for other system allocations.
+# HELP go_memstats_stack_inuse_bytes Number of bytes in use by the stack allocator.
+# HELP go_memstats_stack_sys_bytes Number of bytes obtained from system for stack allocator.
+# HELP go_memstats_sys_bytes Number of bytes obtained from system.
+# HELP go_threads Number of OS threads created.
+# HELP http_request_duration_microseconds The HTTP request latencies in microseconds.
+# HELP http_request_size_bytes The HTTP request sizes in bytes.
+# HELP http_requests_total Total number of HTTP requests made.
+# HELP http_response_size_bytes The HTTP response sizes in bytes.
+# HELP kubelet_cgroup_manager_duration_seconds Duration in seconds for cgroup manager operations. Broken down by method.
+# HELP kubelet_cgroup_manager_latency_microseconds (Deprecated) Latency in microseconds for cgroup manager operations. Broken down by method.
+# HELP kubelet_container_log_filesystem_used_bytes Bytes used by the container's logs on the filesystem.
+# HELP kubelet_containers_per_pod_count The number of containers per pod.
+# HELP kubelet_docker_operations (Deprecated) Cumulative number of Docker operations by operation type.
+# HELP kubelet_docker_operations_duration_seconds Latency in seconds of Docker operations. Broken down by operation type.
+# HELP kubelet_docker_operations_errors (Deprecated) Cumulative number of Docker operation errors by operation type.
+# HELP kubelet_docker_operations_errors_total Cumulative number of Docker operation errors by operation type.
+# HELP kubelet_docker_operations_latency_microseconds (Deprecated) Latency in microseconds of Docker operations. Broken down by operation type.
+# HELP kubelet_docker_operations_total Cumulative number of Docker operations by operation type.
+# HELP kubelet_network_plugin_operations_duration_seconds Latency in seconds of network plugin operations. Broken down by operation type.
+# HELP kubelet_network_plugin_operations_latency_microseconds (Deprecated) Latency in microseconds of network plugin operations. Broken down by operation type.
+# HELP kubelet_node_config_error This metric is true (1) if the node is experiencing a configuration-related error, false (0) otherwise.
+# HELP kubelet_node_name The node's name. The count is always 1.
+# HELP kubelet_pleg_relist_duration_seconds Duration in seconds for relisting pods in PLEG.
+# HELP kubelet_pleg_relist_interval_microseconds (Deprecated) Interval in microseconds between relisting in PLEG.
+# HELP kubelet_pleg_relist_interval_seconds Interval in seconds between relisting in PLEG.
+# HELP kubelet_pleg_relist_latency_microseconds (Deprecated) Latency in microseconds for relisting pods in PLEG.
+# HELP kubelet_pod_start_duration_seconds Duration in seconds for a single pod to go from pending to running.
+# HELP kubelet_pod_start_latency_microseconds (Deprecated) Latency in microseconds for a single pod to go from pending to running.
+# HELP kubelet_pod_worker_duration_seconds Duration in seconds to sync a single pod. Broken down by operation type: create, update, or sync
+# HELP kubelet_pod_worker_latency_microseconds (Deprecated) Latency in microseconds to sync a single pod. Broken down by operation type: create, update, or sync
+# HELP kubelet_pod_worker_start_duration_seconds Duration in seconds from seeing a pod to starting a worker.
+# HELP kubelet_pod_worker_start_latency_microseconds (Deprecated) Latency in microseconds from seeing a pod to starting a worker.
+# HELP kubelet_running_container_count Number of containers currently running
+# HELP kubelet_running_pod_count Number of pods currently running
+# HELP kubelet_runtime_operations (Deprecated) Cumulative number of runtime operations by operation type.
+# HELP kubelet_runtime_operations_duration_seconds Duration in seconds of runtime operations. Broken down by operation type.
+# HELP kubelet_runtime_operations_errors (Deprecated) Cumulative number of runtime operation errors by operation type.
+# HELP kubelet_runtime_operations_errors_total Cumulative number of runtime operation errors by operation type.
+# HELP kubelet_runtime_operations_latency_microseconds (Deprecated) Latency in microseconds of runtime operations. Broken down by operation type.
+# HELP kubelet_runtime_operations_total Cumulative number of runtime operations by operation type.
+# HELP kubelet_volume_stats_available_bytes Number of available bytes in the volume
+# HELP kubelet_volume_stats_capacity_bytes Capacity in bytes of the volume
+# HELP kubelet_volume_stats_inodes Maximum number of inodes in the volume
+# HELP kubelet_volume_stats_inodes_free Number of free inodes in the volume
+# HELP kubelet_volume_stats_inodes_used Number of used inodes in the volume
+# HELP kubelet_volume_stats_used_bytes Number of used bytes in the volume
+# HELP kubernetes_build_info A metric with a constant '1' value labeled by major, minor, git version, git commit, git tree state, build date, Go version, and compiler from which Kubernetes was built, and platform on which it is running.
+# HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
+# HELP process_max_fds Maximum number of open file descriptors.
+# HELP process_open_fds Number of open file descriptors.
+# HELP process_resident_memory_bytes Resident memory size in bytes.
+# HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
+# HELP process_virtual_memory_bytes Virtual memory size in bytes.
+# HELP process_virtual_memory_max_bytes Maximum amount of virtual memory available in bytes.
+# HELP rest_client_request_duration_seconds Request latency in seconds. Broken down by verb and URL.
+# HELP rest_client_request_latency_seconds (Deprecated) Request latency in seconds. Broken down by verb and URL.
+# HELP rest_client_requests_total Number of HTTP requests, partitioned by status code, method, and host.
+# HELP ssh_tunnel_open_count Counter of ssh tunnel total open attempts
+# HELP ssh_tunnel_open_fail_count Counter of ssh tunnel failed open attempts
+# HELP storage_operation_duration_seconds Storage operation duration
+# HELP storage_operation_errors_total Storage operation errors
+# HELP storage_operation_status_count Storage operation return statuses count
+# HELP volume_manager_total_volumes Number of volumes in Volume Manager
