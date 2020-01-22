@@ -86,7 +86,7 @@ The endpoint for metrics related to kubelet's own statistics like
 
 * storage_operation_duration_seconds
 
-  As the API is not documented and the kubelet is prone to change at any time; the best place to get current list of all metrics is basically running a GET request against your own kubelets (see [Authentication and Querying](#Authentication and Querying)). But you can find an example [here](../assets/2020-01-13-kubelet-api/metrics endpoint.txt)
+  As the API is not documented and the kubelet is prone to change at any time; the best place to get current list of all metrics is basically running a GET request against your own kubelets (see [Authentication and Querying](#Authentication and Querying)). But you can find an example [here](/blog/assets/2020-01-13-kubelet-api/metrics endpoint.txt)
 
   
 
@@ -104,7 +104,7 @@ These include the most interesting metrics from a developer point of view. Becau
 * machine_cpu_cores
 * machine_memory_bytes
 
-The current list can be found [here](../assets/2020-01-13-kubelet-api/cadvisor.txt)
+The current list can be found [here](/blog/assets/2020-01-13-kubelet-api/cadvisor.txt)
 
 
 
@@ -193,7 +193,7 @@ This gives some statistical information for the resources in the node in JSON fo
 
 This gives information for the pods deployed to the node. The information is very detailed and includes the metadata, labels, annotations, owner references (for example the DaemonSet that owns the pod), volumes, containers, and status.
 
-You can find the structure of a pod entry [here](../assets/2020-01-13-kubelet-api/pods_entry.txt).
+You can find the structure of a pod entry [here](/blog/assets/2020-01-13-kubelet-api/pods_entry.txt).
 
 
 
