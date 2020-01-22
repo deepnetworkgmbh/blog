@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Understanding Networking Options in Azure AKS-Engine [Part 1]
-author: ahmed.demirpolat@deepnetwork.com
+author: ahmddp
 ---
 
 * TOC

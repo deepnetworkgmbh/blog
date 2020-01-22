@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Securing Access to SQL Server with Managed Identities and aad-pod-binding
-author: haluk.aktas@deepnetwork.com
+author: haktas
 ---
 
 A common challenge when building cloud applications is how to manage the credentials in your code for authenticating to cloud services. In this blog post, I will try to explain how we managed to transform our application to use `managed identities` while connecting SQL database instance in pod level by using [aad-pod-binding](https://github.com/Azure/aad-pod-identity).
@@ -24,7 +24,8 @@ For example if you create a user assigned identity with the following Azure cli 
 
 ```
 az identity create -g myResourceGroup -n myIdentityName -o json
-
+```
+``` json
 {
 "clientId": "xxxxxxx-cf3e-xxxxx-8432-xxxxxxxxxx",
   "clientSecretUrl": "https://control-westeurope.identity.azure.net/subscriptions/xxxxxxx-xxxxxxx-4031-9e8b-xxxxxxxxx/resourcegroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myIdentityName/credentials?tid=xxxxxxxx-8072-xxxxxxx-bf43-xxxxxxxx&oid=xxxxxxx-e50b-xxxxxxx-b58f-xxxxxxxxxx&aid=386fc565-xxxxxxxxx-44c0-xxxxxxx-xxxxxxxxxx",
@@ -55,7 +56,7 @@ Basically, since database users cannot be created from the Azure portal, we need
 
 Later, you can login to SQL Database instance from `SSMS` by supplying credentials for your AD user or group account which is assigned as AD admin of the SQL Server previously. If you intend to perform this operation through `CI/CD` pipeline like `Azure DevOps`, then you can follow [this article](https://blog.bredvid.no/handling-azure-managed-identity-access-to-azure-sql-in-an-azure-devops-pipeline-1e74e1beb10b).  After that you can use the following T-SQL statement:
 
-```
+``` sql
 CREATE USER <Azure_AD_principal_name> FROM EXTERNAL PROVIDER;
 
 ALTER ROLE db_datareader ADD MEMBER [<Azure_AD_principal_name];
@@ -97,7 +98,7 @@ az identity create -g myResourceGroup -n myidentity -o json
 
 Install created identity to our cluster by deploying the following:
 
-```
+``` yaml
 apiVersion: "aadpodidentity.k8s.io/v1"
 kind: AzureIdentity
 metadata:
@@ -112,7 +113,7 @@ spec:
 
 Install the Azure Identity Binding with the following deployment:
 
-```
+``` yaml
 apiVersion: "aadpodidentity.k8s.io/v1"
 kind: AzureIdentityBinding
 metadata:
@@ -126,7 +127,7 @@ In order to match an identity binding, the pod has to define a label with the ke
 
 After deploying identity binding to our cluster, the only thing remained is to provide custom label value `connectsqlserver` to our pods `aadpodidbinding` label. When Managed Identity Controller (`MIC`) detects matching between our pod label with corresponding binding, the `MIC` adds assigned identity `AzureAssignedIdentities` to the cluster node. Before deploying our application to the cluster, we must label our pod as:
 
-```
+``` yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -142,13 +143,13 @@ spec:
 
 After setting managed identity with its permissions in pod level, we can update our `.NET Core` application code. First, the following `Nuget` package have to be installed:
 
-```
+``` powershell
 Install-Package Microsoft.Azure.Services.AppAuthentication
 ```
 
 In order to connect to Azure SQL Server database, provide the connection string with only database server and database instance name without username, password credentials since the access token is going to be retrieved at runtime with aad-pod-identity-binding.
 
-```
+``` c#
     String connString = "Server=tcp:mySQLServer.database.windows.net,1433;  Database=mySQLServerDatabaseInstance";
 
             var conn = new SqlConnection(connString)
@@ -161,7 +162,7 @@ In order to connect to Azure SQL Server database, provide the connection string 
 
 After deploying of our application to the cluster, you can inspect the `MIC` pod logs to see how identity bindings are performed dynamically.
 
-```
+``` log
 kubectl get logs
 
 NAME                  READY   STATUS    RESTARTS   AGE
@@ -219,7 +220,7 @@ I1223 12:22:16.531392       1 stats.go:127] *********************
 
 ## Considerations While Using aad-pod-identity in Cluster
 
-There are some [scenarious](https://itnext.io/using-aad-pod-identity-in-your-azure-kubernetes-clusters-what-to-watch-out-for-73d5d73960f) that you should be aware of before using cluster level pod identity binding. There are some in-work improvements to handle these issues according to the [article](https://medium.com/microsoftazure/pod-identity-5bc0ffb7ebe7). You can see the details of them from the provided article. For example, Azure Kubernetes Service (`AKS`) stores Service Principal credential used to talk with the Azure API in plain-text. This service principal is separate from the underlying identity's service principal. It is the service principal that is created while provisioning the cluster. In addition, the deployed `MIC` pod mounts that file into itself. So, any user with execute access on `MIC` can access to these credentials.
+There are some [scenarios](https://itnext.io/using-aad-pod-identity-in-your-azure-kubernetes-clusters-what-to-watch-out-for-73d5d73960f) that you should be aware of before using cluster level pod identity binding. There are some in-work improvements to handle these issues according to the [article](https://medium.com/microsoftazure/pod-identity-5bc0ffb7ebe7). You can see the details of them from the provided article. For example, Azure Kubernetes Service (`AKS`) stores Service Principal credential used to talk with the Azure API in plain-text. This service principal is separate from the underlying identity's service principal. It is the service principal that is created while provisioning the cluster. In addition, the deployed `MIC` pod mounts that file into itself. So, any user with execute access on `MIC` can access to these credentials.
 
 ## Summary
 
