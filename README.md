@@ -15,15 +15,16 @@ Although the best way to format your first blog correctly is to investigate prev
 * **The links to the resources (images etc.) should have a path relative to the site root folder, not relative to the `_posts` folder**. For example, it will not be `../assets/2020-01-13-kubelet-api/pods_entry.txt`, but should be `/blog/assets/2020-01-13-kubelet-api/pods_entry.txt`.
   Unfortunately, most (if not all) Markdown editors will search the file relative to the post, so the best (only) way to see how the images look is to run `jekyll` locally, which is an easy task.
 
-* You do not put the title of your post in the Markdown file as a heading, but rather use the front matter to set it. You also set the author, specify category and tags related to your post in the front matter section. An example:
+* You do not put the title of your post in the Markdown file as a heading, but rather use the front matter to set it. You also set the author and tags related to your post in the front matter section. An example:
 
   ```yaml
   ---
   layout: post
   title: Blogging using Jekyll
   author: blogger
-  categories: [kubernetes, cloud]
   tags: [kubectl, metrics, Azure]
   ---
   ```
+  
+* Please do not specify `categories` section in the front matter, because it serves for the same purpose as `tags`, but [it changes the URL of the post](https://jekyllrb.com/docs/posts/#categories-and-tags) which is a unwanted behavior for us.
 

@@ -2,7 +2,6 @@
 layout: post
 title: Kubelet API 
 author: emrahkaya
-categories: [kubernetes]
 tags: [kubernetes, kubelet, metrics, monitoring]
 ---
 
