@@ -51,7 +51,7 @@ By dividing table into partitions rather than having a single table will ease id
 
 ### 3- Table Definitions
 
-- In order to apply partitioning on the table, we have to choose partition key and create table on partition schema. For better understanding the concept, we can take the below table definition into account. At first, we can choose partition key as `createdTime` column. This is ideal for start. However, we should choose it as `endTime` column. You can read [related post](2019-11-28-unique-const-dml-trigger-partitioned-table.md) for additional information about unique constraints in a partitioned table.
+- In order to apply partitioning on the table, we have to choose partition key and create table on partition schema. For better understanding the concept, we can take the below table definition into account. At first, we can choose partition key as `createdTime` column. This is ideal for start. However, we should choose it as `endTime` column. You can read [related post]({% post_url 2019-11-28-unique-const-dml-trigger-partitioned-table %}) for additional information about unique constraints in a partitioned table.
 
 - Notice that we have another table and index with exactly the same structure as the original ones except their names. The reason is that we are going to use partition switching. In order to perform switching, the following conditions must be satisfied:
 
