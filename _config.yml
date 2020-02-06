@@ -4,12 +4,12 @@
 # permalink:           pretty
 
 # Setup
-title:               Deep Network GMBH
-tagline:             "Developers' Blog"
-description:         'A blog by Developers at Deep Network GMBH'
-url:                 https://deepnetworkgmbh.github.io/blog/
-baseurl:             /blog/
-paginate:            5
+title: Deep Network GmbH
+tagline: "Developers' Blog"
+description: 'A blog by developers at Deep Network GmbH'
+url: https://deepnetwork.com
+baseurl: /blog
+paginate: 5
 future: true
 plugins:
   - jekyll-feed # atom
@@ -17,10 +17,9 @@ plugins:
 
 # About/contact
 author:
-  name:              Y Furkan Fidan
-  url:               http://www.deepnetwork.com
-  email:             furkan.fidan@deepnetwork.com
+  name: Y Furkan Fidan
+  url: http://www.deepnetwork.com
+  email: furkan.fidan@deepnetwork.com
 
 # Custom vars
-version:             1.0.0
-
+version: 1.0.0
