@@ -531,7 +531,7 @@ kubectl port-forward svc/kibana 9200
 ```
 Now you can access to the UI with the URL `http://localhost:5601` and start investigating your indexes after creating corresponding index patterns.
 
-[serial baseline stopwatches.](/blog/assets/2020-01-27-ELK-stack-filebeat-k8s-deployment/Kibana_ui.png)
+![Kibana UI](/blog/assets/2020-01-27-ELK-stack-filebeat-k8s-deployment/Kibana_ui.png)
 
 ## Summary
 
