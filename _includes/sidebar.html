@@ -11,13 +11,21 @@
   <nav class="sidebar-nav">
     <a class="sidebar-nav-item" href="{{ site.baseurl }}/">Home</a>
 
-    {% comment %} The code below dynamically generates a sidebar nav of pages with `layout: page` in the front-matter.
-    See readme for usage. {% endcomment %} {% assign pages_list = site.pages | sort:"url" %} {% for node in pages_list
-    %} {% if node.title != null %} {% if node.layout == "page" %} {% if node.title != 404 %}
-    <a class="sidebar-nav-item{% if page.url == node.url %} active{% endif %}" href="{{site.baseurl}}{{ node.url }}"
-      >{{ node.title }}</a
-    >
-    {% endif %} {% endif %} {% endif %} {% endfor %}
+    {% comment %} 
+      The code below dynamically generates a sidebar nav of pages with `layout: page` in the front-matter.
+      See readme for usage. 
+    {% endcomment %}
+
+    {% assign pages_list = site.pages | sort:"url" %}
+    {% for node in pages_list %}
+      {% if node.title != null %}
+        {% if node.layout == "page" %}
+          {% if node.title != 404 %}
+            <a class="sidebar-nav-item{% if page.url == node.url %} active{% endif %}" href="{{site.baseurl}}{{ node.url }}">{{ node.title }}</a>
+          {% endif %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
 
     <a class="sidebar-nav-item" href="{{ site.url }}" target="_blank">{{ site.title }}</a>
     <a class="sidebar-nav-item" href="{{ site.github }}" target="_blank">GitHub project</a>
