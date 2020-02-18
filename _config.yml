@@ -9,6 +9,7 @@ tagline: "Developers' Blog"
 description: 'A blog by developers at Deep Network GmbH'
 url: https://deepnetwork.com
 baseurl: /blog
+github: https://github.com/deepnetworkgmbh
 paginate: 5
 future: true
 plugins:
