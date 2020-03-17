@@ -38,6 +38,8 @@ Firstly, we will claim a persistent volume from k8s for our Elasticsearch Statef
 Firstly, we will claim a persistent volume from k8s for our Elasticsearch Statefulset which will be used to store the data collected by Fluentd.
 
 ``` yml
+namespace: kube-logging
+
 resources:
 - statefulset.yaml
 - service.yaml
@@ -85,11 +87,6 @@ spec:
       - name: elasticsearch
         image: docker.elastic.co/elasticsearch/elasticsearch:6.8.6
         imagePullPolicy: IfNotPresent
-        # Add post start lifecycle to add elasticsearch user
-        lifecycle:
-          postStart:
-           exec:
-            command: ["/bin/sh", "-c", "/usr/share/elasticsearch/bin/elasticsearch-users useradd esUser -p esPassword -r superuser"]
         env:
         - name: discovery.type
           value: single-node
@@ -152,12 +149,24 @@ data:
     xpack.ml.enabled: false
 ```
 
+We are now ready to deploy Elasticsearch to our cluster and setup passwords for built-in users with the following command. We're going to use "elastic" user during configuration of kibana and fluentd.
+Disclaimer: I suggest to enhance credentials usage in your production deployment such as prefer Secrets over Configmaps, use different users for kibana and fluentd with the least access principle.
+
+``` yml
+$ kubectl exec -it elasticsearch-0 -n kube-logging -- bin/elasticsearch-setup-passwords auto -b
+
+...
+
+Changed password for user elastic
+PASSWORD elastic = 5B50QQn4TSzDJG9gXJpA
+```
+
 You can verify your Elasticsearch deployment with the following command:
 
 ``` yml
 $ kubectl port-forward statefulsets/elasticsearch 9200:9200 -n kube-logging
 
-$ curl http://esUser:esPassword@localhost:9200
+$ curl http://elastic:<ELASTIC_PASSWORD>@localhost:9200
 {
   "name" : "node-1",
   "cluster_name" : "password-protected-es",
@@ -184,6 +193,8 @@ $ curl http://esUser:esPassword@localhost:9200
 We'll continue with Kibana deployment, if you've done with Elasticsearch. Our Kibana setup contains a Deployment, Service and ConfigMap like we do in Elasticsearch.
 
 ``` yml
+namespace: kube-logging
+
 resources:
 - deployment.yaml
 - service.yaml
@@ -261,8 +272,8 @@ metadata:
   labels:
     component: kibana
 data:
-  elasticsearch_username: esUser
-  elasticsearch_password: esPassword
+  elasticsearch_username: elastic
+  elasticsearch_password: ELASTIC_PASSWORD # it needs to be changed
 ```
 
 Now, you can verify your Elasticsearch/Kibana deployment at your browser with the following url:
@@ -286,6 +297,8 @@ http://192.168.64.16:30071
 In the previous parts, we experienced how to deploy Elasticsearch and Kibana on k8s. Now, in the last part of this article, we'll be concentrating on Fluentd deployment which composed of a ConfigMap, Daemonset and Role-Based-Access-Control(RBAC) configuration.
 
 ``` yml
+namespace: kube-logging
+
 resources:
 - daemonset.yaml
 - rbac.yaml
@@ -410,8 +423,8 @@ metadata:
   labels:
     component: fluentd
 data:
-  elasticsearch_username: esUser
-  elasticsearch_password: esPassword
+  elasticsearch_username: elastic
+  elasticsearch_password: ELASTIC_PASSWORD # it needs to be changed
 ```
 
 Now, it's time to verify that our freshly deployed EFK stack works as expected or not. Please, navigate Kibana endpoint again  and try to create an index pattern by selecting the _logstash_ index which is newly created by Fluentd. You should be able to view your application logs under _Discover_ page.
