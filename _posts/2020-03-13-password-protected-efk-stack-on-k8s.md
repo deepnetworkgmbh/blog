@@ -4,7 +4,7 @@ title: Password Protected EFK Stack on Kubernetes
 author: onuryilmaz
 ---
 
-In this article, my aim is to play around with EFK stack on Kubernetes which is a collection of [Elasticsearch]https://www.elastic.co/elasticsearch/, [Fluentd]https://www.fluentd.org and [Kibana]https://www.elastic.co/kibana/. The main motivation behind that stack is reliably and securely take the data from the k8s cluster, in any format, then search, analyze and visualize it any time. In brief,
+In this article, my aim is to play around with EFK stack on Kubernetes which is a collection of [Elasticsearch](https://www.elastic.co/elasticsearch/), [Fluentd](https://www.fluentd.org) and [Kibana](https://www.elastic.co/kibana/). The main motivation behind that stack is reliably and securely take the data from the k8s cluster, in any format, then search, analyze and visualize it any time. In brief,
 
 - **Elasticsearch** is a distributed, open source search and analytics engine for all types of data, including textual, numerical, geospatial, structured, and unstructured.
 - **Fluentd** is an open source data collector, which lets you unify the data collection and consumption for a better use and understanding of data.
@@ -26,7 +26,7 @@ To get started, create a namespace inside minikube, to do that you can simply ru
 $ kubectl create ns kube-logging
 ```
 
-A minor detail, you're going to find a file inside each module named as _kustomization.yaml_, [kustomize]https://kustomize.io is another facilitator which lets us customize raw, template-free YAML files for multiple purposes, leaving the original YAML untouched and usable as is.
+A minor detail, you're going to find a file inside each module named as _kustomization.yaml_, [kustomize](https://kustomize.io) is another facilitator which lets us customize raw, template-free YAML files for multiple purposes, leaving the original YAML untouched and usable as is.
 
 ***
 
@@ -433,4 +433,4 @@ Now, it's time to verify that our freshly deployed EFK stack works as expected o
 
 ## Final Words
 
-To sum up, I tried to express how a password protected EFK stack could be deployed to the Kubernetes cluster by using xpack features. Hope you find what you were looking for and I made myself clear. Please don't hesitate to [connect]https://www.linkedin.com/in/onrylmz/ / contact via onur.yilmaz[at]deepnetwork.com.
+To sum up, I tried to express how a password protected EFK stack could be deployed to the Kubernetes cluster by using xpack features. Hope you find what you were looking for and I made myself clear. Please don't hesitate to [connect](https://www.linkedin.com/in/onrylmz/) / contact via onur.yilmaz[at]deepnetwork.com.
