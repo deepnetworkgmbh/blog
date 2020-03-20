@@ -33,9 +33,6 @@ A minor detail, you're going to find a file inside each module named as _kustomi
 ## Elasticsearch
 
 Let's get started to walk through the details of Elasticsearch which consists of a Statefulset, service, persistent volume and ConfigMap. You can always have a quick look to get the component summary from its _kustomization.yaml_ file.
-Firstly, we will claim a persistent volume from k8s for our Elasticsearch Statefulset which will be used to store the data collected by Fluentd.
-
-Firstly, we will claim a persistent volume from k8s for our Elasticsearch Statefulset which will be used to store the data collected by Fluentd.
 
 ``` yml
 namespace: kube-logging
@@ -45,6 +42,23 @@ resources:
 - service.yaml
 - configmap.yaml
 - pvc.yaml
+```
+
+Firstly, we will claim a persistent volume from k8s for our Elasticsearch Statefulset which will be used to store the data collected by Fluentd.
+
+``` yml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: elasticsearch-pvc
+  labels:
+    component: elasticsearch
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1G
 ```
 
 Secondly, we will deploy a service to expose our Elasticsearch application running on a set of pods as a network service, and all components running in our cluster would be able to reach Elasticsearch through port 9200.
