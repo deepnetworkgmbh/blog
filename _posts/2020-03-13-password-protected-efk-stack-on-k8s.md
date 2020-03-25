@@ -4,6 +4,8 @@ title: Password Protected EFK Stack on Kubernetes
 author: onuryilmaz
 ---
 
+![Photo by Jason Dent on Unsplash](/blog/assets/2020-03-13-password-protected-efk-stack-on-k8s/password-unsplash.jpg)
+
 In this article, my aim is to play around with EFK stack on Kubernetes which is a collection of [Elasticsearch](https://www.elastic.co/elasticsearch/), [Fluentd](https://www.fluentd.org) and [Kibana](https://www.elastic.co/kibana/). The main motivation behind that stack is reliably and securely take the data from the k8s cluster, in any format, then search, analyze and visualize it any time. In brief,
 
 - **Elasticsearch** is a distributed, open source search and analytics engine for all types of data, including textual, numerical, geospatial, structured, and unstructured.
