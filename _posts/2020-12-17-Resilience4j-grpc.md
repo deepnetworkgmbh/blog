@@ -15,6 +15,8 @@ First lets briefly mention our stack:
 
 ## Dependencies
 
+I used maven for dependency management, here is how a simple pom would like.
+
 ``` xml
 <dependencies>
   <dependency>
@@ -35,7 +37,8 @@ First lets briefly mention our stack:
 ```
 
 ## Configuration
-And an simple for resilience4j configuration that belongs in `application.yml`
+You can easily configure resilience4j-spring-boot2 with `application.yml` file in resources folder. 
+More examples can be found in [resilience4j user guide](https://resilience4j.readme.io/docs/getting-started-3)
 
 ``` yml
 resilience4j.circuitbreaker:
@@ -58,7 +61,7 @@ resilience4j.circuitbreaker:
 
 ## Spring boot service that makes grpc client call
 
-With resilience4j-spring-boot2 library it is extremely simple to add circuitbreaker to a service call just adding `@CircuitBreaker(name = "simpleService")` to a method will do the trick. Other than that I will also convert java object to grpc request and response to a meaningful java object.
+With resilience4j-spring-boot2 library it is extremely simple to add circuitbreaker to a service call just adding `@CircuitBreaker(name = "simpleService")` to a method will do the trick. Other than that we also convert java object to grpc request, send the request via client stub and convert grpc response to a meaningful java object.
 
 ``` java
 @Service
@@ -174,7 +177,7 @@ public class GlobalClientInterceptorConfiguration {
 
 ## Final Words
 
-That’s pretty much it from the article. I tried to summarize how to properly connect grpc with resilience4j. There isn't much information about this on the internet, this is what I managed to put together after some research. Hope it works for you too. Please don't hesitate to [connect](https://www.linkedin.com/in/alicanhaman/) / contact via alican.haman[at]deepnetwork.com.
+That’s pretty much it from the article. I tried to summarize how to properly connect grpc with resilience4j. There isn't much information about this on the internet, this is what I managed to put together after some research. Hope it works for you too. Please don't hesitate to [connect](https://www.linkedin.com/in/alican-haman/) / contact via alican.haman[at]deepnetwork.com.
 
 ## Further reading
 
