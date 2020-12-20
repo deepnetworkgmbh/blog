@@ -13,9 +13,102 @@ First lets briefly mention our stack:
 - **Resilience4j** is a lightweight fault tolerance library inspired by [Netflix Hystrix](https://github.com/Netflix/Hystrix), but designed for Java 8 and functional programming. Lightweight, because the library only uses Vavr, which does not have any other external library dependencies. Netflix Hystrix, in contrast, has a compile dependency to Archaius which has many more external library dependencies such as Guava and Apache Commons Configuration. Since Hytrix have been moved to about 2 years ago, this library is deemed as a good alternative.
 - **gRPC** is a modern open source high performance RPC framework that can run in any environment. It can efficiently connect services in and across data centers with pluggable support for load balancing, tracing, health checking and authentication.
 
+# Proto project
+
 ## Dependencies
 
-I used maven for dependency management, here is how a simple pom would like.
+In order to get grpc working, we need a protofile definition and generate classes from there.
+For that we need to add some grpc dependencies.
+
+``` xml
+    <dependencies>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-stub</artifactId>
+            <version>1.34.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-protobuf</artifactId>
+            <version>1.34.0</version>
+        </dependency>
+        <dependency>
+            <!-- Java 9+ compatibility -->
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+        </dependency>
+    </dependencies>
+```
+
+## Using Maven Plugin
+And we can use a plugin to generate the code automatically with maven
+
+``` xml
+<build>
+  <extensions>
+    <extension>
+      <groupId>kr.motd.maven</groupId>
+      <artifactId>os-maven-plugin</artifactId>
+      <version>1.6.1</version>
+    </extension>
+  </extensions>
+  <plugins>
+    <plugin>
+      <groupId>org.xolstice.maven.plugins</groupId>
+      <artifactId>protobuf-maven-plugin</artifactId>
+      <version>0.6.1</version>
+      <configuration>
+        <protocArtifact>
+          com.google.protobuf:protoc:3.3.0:exe:${os.detected.classifier}
+        </protocArtifact>
+        <pluginId>grpc-java</pluginId>
+        <pluginArtifact>
+          io.grpc:protoc-gen-grpc-java:1.4.0:exe:${os.detected.classifier}
+        </pluginArtifact>
+      </configuration>
+      <executions>
+        <execution>
+          <goals>
+            <goal>compile</goal>
+            <goal>compile-custom</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+  </plugins>
+</build>
+```
+
+## Proto File
+
+Here is how a proto file for a service that gets gets a HelloRequest and returns a custom greeting would look like.
+
+``` protobuf
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.deepnetwork.grpc";
+option java_outer_classname = "HelloProto";
+
+// Hello Service definition
+service HelloService {
+    rpc hello(HelloRequest) returns (HelloResponse);
+}
+
+message HelloRequest {
+    string firstName = 1;
+    string lastName = 2;
+}
+
+message HelloResponse {
+    string greeting = 1;
+}
+```
+
+# Grpc Client
+## Dependencies
+
+We have to add our proto project, resilience4j and [grpc-client](https://github.com/yidongnan/grpc-spring-boot-starter)
 
 ``` xml
 <dependencies>
@@ -26,12 +119,13 @@ I used maven for dependency management, here is how a simple pom would like.
   <!-- basically your grpc proto project -->
   <dependency>
       <groupId>com.deepnetwork</groupId>
-      <artifactId>simple-service-grpc</artifactId>
+      <artifactId>hello-service-grpc</artifactId>
       <version>${project.version}</version>
   </dependency>
   <dependency>
       <groupId>io.github.resilience4j</groupId>
       <artifactId>resilience4j-spring-boot2</artifactId>
+      <version>1.6.1</version>
   </dependency>
 </dependencies>
 ```
@@ -55,37 +149,31 @@ resilience4j.circuitbreaker:
       recordExceptions:
         - io.grpc.StatusRuntimeException
   instances:
-    simpleService:
+    helloService:
       baseConfig: default
 ```
 
 ## Spring boot service that makes grpc client call
 
-With resilience4j-spring-boot2 library it is extremely simple to add circuitbreaker to a service call just adding `@CircuitBreaker(name = "simpleService")` to a method will do the trick. Other than that we also convert java object to grpc request, send the request via client stub and convert grpc response to a meaningful java object.
+With resilience4j-spring-boot2 library it is quite easy to add circuitbreaker to a service call just adding `@CircuitBreaker(name = "helloService")` to a method will do the trick. Other than that we also convert java object to grpc request, send the request via client stub and convert grpc response to a meaningful java object.
 
 ``` java
 @Service
-public class SimpleServiceImpl implements SimpleService {
+public class HelloServiceImpl implements HelloService {
 
-    @GrpcClient("simple-service")
-    private SimpleServiceGrpc.SimpleServiceBlockingStub simpleServiceBlockingStub;
-    private static final String simple_SERVICE = "simpleService";
+    @GrpcClient("hello-service")
+    private HelloServiceGrpc.HelloServiceBlockingStub helloServiceBlockingStub;
+    private static final String HELLO_SERVICE = "helloService";
 
-    private final DomToGrpcRequestConverter domToGrpcRequestConverter;
-
-    private final GrpcResponseToDomConverter grpcResponseToDomConverter;
-
-    public SimpleServiceImpl(DomToGrpcRequestConverter domToGrpcRequestConverter, GrpcResponseToDomConverter grpcResponseToDomConverter) {
-        this.domToGrpcRequestConverter = domToGrpcRequestConverter;
-        this.grpcResponseToDomConverter = grpcResponseToDomConverter;
-    }
-
-    @CircuitBreaker(name = simple_SERVICE)
+    @CircuitBreaker(name = HELLO_SERVICE)
     @Override
-    public SimpleMetadataDom onboard(SimpleOnboardDom simpleOnboardDom) {
-        SimpleOnboardRequest simpleOnboardRequest = domToGrpcRequestConverter.createSimpleOnboardRequest(simpleOnboardDom);
-        SimpleOnboardResponse simpleOnboardResponse = simpleServiceBlockingStub.onboardSimple(simpleOnboardRequest);
-        return grpcResponseToDomConverter.createSimpleMetadataDom(simpleOnboardResponse);
+    public String onboard(String firstName, String lastName) {
+        HelloRequest helloRequest = helloRequest.newBuilder()
+                .setFirtName(firstName)
+                .setLastName(lastName)
+                .build();
+        HelloResponse helloResponse = helloServiceBlockingStub.hello(helloRequest);
+        return helloResponse.getGreeting();
     }
 ```
 
@@ -161,7 +249,7 @@ It will basically look like this
 @Configuration(proxyBeanMethods = false)
 public class GlobalClientInterceptorConfiguration {
 
-    private static final String SIMPLE_SERVICE = "simpleService";
+    private static final String HELLO_SERVICE = "helloService";
     protected final CircuitBreakerRegistry circuitBreakerRegistry;
 
     public GlobalClientInterceptorConfiguration(CircuitBreakerRegistry circuitBreakerRegistry) {
@@ -170,7 +258,7 @@ public class GlobalClientInterceptorConfiguration {
 
     @GrpcGlobalClientInterceptor
     ClientInterceptor circuitBreakerClientInterceptor() {
-        return new CircuitBreakerClientInterceptor(circuitBreakerRegistry.circuitBreaker(SIMPLE_SERVICE));
+        return new CircuitBreakerClientInterceptor(circuitBreakerRegistry.circuitBreaker(HELLO_SERVICE));
     }
 }
 ```
@@ -185,3 +273,15 @@ If you are interested in how resilience4j works check out the [Getting Started D
 
 I would also recommend [this talk](https://www.youtube.com/watch?v=KosSsZEqS-k) by one of the contributors of the library. It explains in detail all the fault tolerance concepts in the library.
 
+# References
+- Resilience4j introduction [[1]]
+- About gRPC [[2]]
+- Baeldung Introduction to gRPC [[3]]
+- Grpc examples [[4]]
+- Example kotlin code for interceptor [[5]]
+
+[1]:https://github.com/resilience4j/resilience4j#1-introduction
+[2]:https://grpc.io/about/
+[3]:https://www.baeldung.com/grpc-introduction
+[4]:https://github.com/yidongnan/grpc-spring-boot-starter/tree/master/examples
+[5]:https://gist.github.com/eungju/226274b3dacb3203de3514bcf1c54505
