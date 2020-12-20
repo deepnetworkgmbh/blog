@@ -115,6 +115,7 @@ We have to add our proto project, resilience4j and [grpc-client](https://github.
   <dependency>
       <groupId>net.devh</groupId>
       <artifactId>grpc-client-spring-boot-starter</artifactId>
+      <version>2.10.1.RELEASE</version>
   </dependency>
   <!-- basically your grpc proto project -->
   <dependency>
