@@ -6,19 +6,19 @@ categories: [grpc, resilience4j]
 tags: [grpc, resilience4j, spring boot]
 ---
 
-In this article, I will explain how to set up [Resilience4j](https://github.com/resilience4j/resilience4j) circuit breaker to work with a grpc client set up with [grpc-spring-boot-starter](https://github.com/yidongnan/grpc-spring-boot-starter). Normally, resilience4j is built to handle restful requests easily, but when it comes to grpc is [falls short](https://github.com/resilience4j/resilience4j/issues/1067). There is an open PR in the resilience4j repository, but it seems to have been left to rot.
+This article explains how to set up [Resilience4j](https://github.com/resilience4j/resilience4j) circuit breaker to work with a grpc client set up with [grpc-spring-boot-starter](https://github.com/yidongnan/grpc-spring-boot-starter). Normally, resilience4j is built to handle restful requests easily, but when it comes to grpc is [falls short](https://github.com/resilience4j/resilience4j/issues/1067). There is an open PR in the resilience4j repository, but it seems to have been left to rot.
 
-First lets briefly mention our stack: 
+First, let us briefly mention our stack: 
 
-- **Resilience4j** is a lightweight fault tolerance library inspired by [Netflix Hystrix](https://github.com/Netflix/Hystrix), but designed for Java 8 and functional programming. Lightweight, because the library only uses Vavr, which does not have any other external library dependencies. Netflix Hystrix, in contrast, has a compile dependency to Archaius which has many more external library dependencies such as Guava and Apache Commons Configuration. Since Hytrix have been moved to about 2 years ago, this library is deemed as a good alternative.
+- **Resilience4j** is a lightweight fault tolerance library inspired by [Netflix Hystrix](https://github.com/Netflix/Hystrix), but designed for Java 8 and functional programming. Lightweight, because the library only uses Vavr, which does not have any other external library dependencies. Netflix Hystrix, in contrast, has a compile dependency to Archaius which has many more external library dependencies such as Guava and Apache Commons Configuration. Since Hytrix has been moved to maintenance about 2 years ago, this library is deemed as a good alternative.
 - **gRPC** is a modern open source high performance RPC framework that can run in any environment. It can efficiently connect services in and across data centers with pluggable support for load balancing, tracing, health checking and authentication.
 
 # Proto project
 
 ## Dependencies
 
-In order to get grpc working, we need a protofile definition and generate classes from there.
-For that we need to add some grpc dependencies.
+To get grpc working, we need a protofile definition and generate classes from there.
+For that, we need to add some grpc dependencies.
 
 ``` xml
     <dependencies>
@@ -81,7 +81,7 @@ And we can use a plugin to generate the code automatically with maven
 
 ## Proto File
 
-Here is how a proto file for a service that gets gets a HelloRequest and returns a custom greeting would look like.
+Here is how a proto file for a service that gets a HelloRequest and returns a custom greeting would look like.
 
 ``` protobuf
 syntax = "proto3";
@@ -108,7 +108,7 @@ message HelloResponse {
 # Grpc Client
 ## Dependencies
 
-We have to add our proto project, resilience4j and [grpc-client](https://github.com/yidongnan/grpc-spring-boot-starter)
+We have to add our proto project, resilience4j, and [grpc-client](https://github.com/yidongnan/grpc-spring-boot-starter)
 
 ``` xml
 <dependencies>
@@ -132,7 +132,7 @@ We have to add our proto project, resilience4j and [grpc-client](https://github.
 ```
 
 ## Configuration
-You can easily configure resilience4j-spring-boot2 with `application.yml` file in resources folder. 
+You can configure resilience4j-spring-boot2 with `application.yml` file in resources folder. 
 More examples can be found in [resilience4j user guide](https://resilience4j.readme.io/docs/getting-started-3)
 
 ``` yml
@@ -156,7 +156,7 @@ resilience4j.circuitbreaker:
 
 ## Spring boot service that makes grpc client call
 
-With resilience4j-spring-boot2 library it is quite easy to add circuitbreaker to a service call just adding `@CircuitBreaker(name = "helloService")` to a method will do the trick. Other than that we also convert java object to grpc request, send the request via client stub and convert grpc response to a meaningful java object.
+With the resilience4j-spring-boot2 library, we can add circuitbreaker to a service call by using `@CircuitBreaker(name = "helloService")` annotation. Here is how our method looks like;
 
 ``` java
 @Service
@@ -168,7 +168,7 @@ public class HelloServiceImpl implements HelloService {
 
     @CircuitBreaker(name = HELLO_SERVICE)
     @Override
-    public String onboard(String firstName, String lastName) {
+    public String sayHello(String firstName, String lastName) {
         HelloRequest helloRequest = helloRequest.newBuilder()
                 .setFirtName(firstName)
                 .setLastName(lastName)
@@ -178,11 +178,11 @@ public class HelloServiceImpl implements HelloService {
     }
 ```
 
-## Intercepting calls and fine tuning circuitbreaker
+## Intercepting calls and customizing circuitbreaker
 
-The ClientInterceptor will intercept every single call to client. If the CircuitBreaker is in closed or half-closed state call will be permitted and grpc request can continue on.
+The ClientInterceptor will intercept every single call to the client. If the CircuitBreaker is in closed or half-closed state call will be permitted and the grpc request can continue.
 <p>
-It will also add a custom listener to every single grpc call that has gone through checking the status of the grpc response. If it is a server side error it will be judged as circuitBreaker error, otherwise it will be judged as success. Therefore helping circuitBreaker decide when it needs to close.
+It will also add a custom listener to every single grpc call that has gone through checking the status of the grpc response. If it is a server side error it will be judged as circuitBreaker error, otherwise, it will be judged as a success. Therefore helping circuitBreaker decide when it needs to close.
 
 ``` java
 public final class CircuitBreakerClientInterceptor implements ClientInterceptor {
@@ -266,9 +266,11 @@ public class GlobalClientInterceptorConfiguration {
 
 ## Final Words
 
-That’s pretty much it from the article. I tried to summarize how to properly connect grpc with resilience4j. There isn't much information about this on the internet, this is what I managed to put together after some research. Hope it works for you too. Please don't hesitate to [connect](https://www.linkedin.com/in/alican-haman/) / contact via alican.haman[at]deepnetwork.com.
+Please don't hesitate to [connect](https://www.linkedin.com/in/alican-haman/) / contact via alican.haman[at]deepnetwork.com.
 
 ## Further reading
+
+You can check out what circuit breaker is and how it works from [here](https://buttondown.email/computer-napkins/archive/napkin-problem-11-circuit-breakers/)
 
 If you are interested in how resilience4j works check out the [Getting Started Doc](https://resilience4j.readme.io/docs/getting-started-3) for resilience4j.
 
