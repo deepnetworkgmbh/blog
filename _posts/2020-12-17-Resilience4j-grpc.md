@@ -181,7 +181,7 @@ public class HelloServiceImpl implements HelloService {
 ## Intercepting calls and customizing circuitbreaker
 
 The ClientInterceptor will intercept every single call to the client. If the CircuitBreaker is in closed or half-closed state call will be permitted and the grpc request can continue.
-<p>
+
 It will also add a custom listener to every single grpc call that has gone through checking the status of the grpc response. If it is a server side error it will be judged as circuitBreaker error, otherwise, it will be judged as a success. Therefore helping circuitBreaker decide when it needs to close.
 
 ``` java
